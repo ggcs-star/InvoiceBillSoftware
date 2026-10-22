@@ -1,0 +1,130 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Enums\PrinterConnectionType;
+use App\Enums\UserRole;
+use App\Models\Restaurant;
+use App\Models\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+/**
+ * A ready-to-bill demo brand with two branches so the whole flow (branch ->
+ * areas -> categories -> menu -> cart -> checkout -> invoice -> print) can be
+ * exercised immediately after a fresh install. Prices differ per branch to
+ * demonstrate that menu pricing is set independently at each location.
+ */
+class DemoRestaurantSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $restaurant = Restaurant::updateOrCreate(
+            ['slug' => 'spice-garden'],
+            ['name' => 'Spice Garden', 'is_active' => true]
+        );
+
+        $branches = [
+            [
+                'slug' => 'mg-road',
+                'name' => 'MG Road',
+                'address' => '12 MG Road, Bengaluru',
+                'phone' => '+91 98765 43210',
+                'gstin' => '29ABCDE1234F1Z5',
+                'printer_ip' => '192.168.1.50',
+                'areas' => ['Indoor', 'Rooftop'],
+                'price_multiplier' => 1.0,
+                'cashier_email' => 'cashier@example.com',
+            ],
+            [
+                'slug' => 'indiranagar',
+                'name' => 'Indiranagar',
+                'address' => '100 Ft Road, Indiranagar, Bengaluru',
+                'phone' => '+91 98765 11223',
+                'gstin' => '29ABCDE1234F1Z6',
+                'printer_ip' => '192.168.1.60',
+                'areas' => ['Indoor', 'Patio'],
+                'price_multiplier' => 1.1,
+                'cashier_email' => 'cashier.indiranagar@example.com',
+            ],
+        ];
+
+        $menu = [
+            'Pizzas' => [
+                ['name' => 'Margherita Pizza', 'price' => 249.00, 'gst' => 5],
+                ['name' => 'Farmhouse Pizza', 'price' => 329.00, 'gst' => 5],
+            ],
+            'Cold Drinks' => [
+                ['name' => 'Cold Drink (330ml)', 'price' => 60.00, 'gst' => 12],
+                ['name' => 'Fresh Lime Soda', 'price' => 80.00, 'gst' => 12],
+            ],
+            'Starters' => [
+                ['name' => 'Paneer Tikka', 'price' => 220.00, 'gst' => 5],
+            ],
+        ];
+
+        foreach ($branches as $branchData) {
+            $branch = $restaurant->branches()->updateOrCreate(
+                ['slug' => $branchData['slug']],
+                [
+                    'name' => $branchData['name'],
+                    'address' => $branchData['address'],
+                    'phone' => $branchData['phone'],
+                    'gstin' => $branchData['gstin'],
+                    'currency' => 'INR',
+                    'is_active' => true,
+                ]
+            );
+
+            $branch->printers()->updateOrCreate(
+                ['name' => 'Counter Printer'],
+                [
+                    'connection_type' => PrinterConnectionType::Network,
+                    'ip_address' => $branchData['printer_ip'],
+                    'port' => 9100,
+                    'is_default' => true,
+                    'is_active' => true,
+                ]
+            );
+
+            foreach ($branchData['areas'] as $index => $areaName) {
+                $branch->areas()->updateOrCreate(
+                    ['name' => $areaName],
+                    ['sort_order' => $index, 'is_active' => true]
+                );
+            }
+
+            foreach ($menu as $categoryName => $items) {
+                $category = $branch->categories()->updateOrCreate(
+                    ['slug' => Str::slug($categoryName)],
+                    ['name' => $categoryName, 'is_active' => true]
+                );
+
+                foreach ($items as $item) {
+                    $branch->menuItems()->updateOrCreate(
+                        ['slug' => Str::slug($item['name'])],
+                        [
+                            'category_id' => $category->id,
+                            'name' => $item['name'],
+                            'price' => round($item['price'] * $branchData['price_multiplier'], 2),
+                            'gst_percentage' => $item['gst'],
+                            'is_available' => true,
+                        ]
+                    );
+                }
+            }
+
+            User::updateOrCreate(
+                ['email' => $branchData['cashier_email']],
+                [
+                    'name' => 'Counter Staff — ' . $branchData['name'],
+                    'password' => Hash::make('12345678'),
+                    'role' => UserRole::User,
+                    'branch_id' => $branch->id,
+                    'is_active' => true,
+                ]
+            );
+        }
+    }
+}
