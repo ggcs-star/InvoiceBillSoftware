@@ -7,10 +7,12 @@ use App\Http\Requests\Billing\AddOrderItemRequest;
 use App\Http\Requests\Billing\ApplyDiscountRequest;
 use App\Http\Requests\Billing\CheckoutRequest;
 use App\Http\Requests\Billing\StartOrderRequest;
+use App\Http\Requests\Billing\UpdateOrderCustomerRequest;
 use App\Http\Requests\Billing\UpdateOrderItemRequest;
 use App\Http\Resources\InvoiceResource;
 use App\Http\Resources\OrderResource;
 use App\Models\MenuItem;
+use App\Models\MenuItemVariation;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Services\InvoiceService;
@@ -51,8 +53,11 @@ class OrderController extends Controller
         $this->authorize('update', $order);
 
         $menuItem = MenuItem::findOrFail($request->input('menu_item_id'));
+        $variation = $request->filled('variation_id')
+            ? MenuItemVariation::findOrFail($request->input('variation_id'))
+            : null;
 
-        $this->orders->addItem($order, $menuItem, $request->integer('quantity'), $request->input('notes'));
+        $this->orders->addItem($order, $menuItem, $request->integer('quantity'), $request->input('notes'), $variation);
 
         return new OrderResource($order->refresh()->load('items'));
     }
@@ -80,6 +85,15 @@ class OrderController extends Controller
         $this->authorize('update', $order);
 
         $this->orders->applyDiscount($order, (string) $request->input('discount_total'));
+
+        return new OrderResource($order->refresh()->load('items'));
+    }
+
+    public function updateCustomer(UpdateOrderCustomerRequest $request, Order $order): OrderResource
+    {
+        $this->authorize('update', $order);
+
+        $this->orders->updateCustomer($order, $request->input('customer_name'), $request->input('customer_phone'));
 
         return new OrderResource($order->refresh()->load('items'));
     }

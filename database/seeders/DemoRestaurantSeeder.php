@@ -22,7 +22,7 @@ class DemoRestaurantSeeder extends Seeder
     {
         $restaurant = Restaurant::updateOrCreate(
             ['slug' => 'spice-garden'],
-            ['name' => 'Spice Garden', 'is_active' => true]
+            ['name' => 'Jagods Cloud Kitchen', 'is_active' => true]
         );
 
         $branches = [
@@ -33,7 +33,6 @@ class DemoRestaurantSeeder extends Seeder
                 'phone' => '+91 98765 43210',
                 'gstin' => '29ABCDE1234F1Z5',
                 'printer_ip' => '192.168.1.50',
-                'areas' => ['Indoor', 'Rooftop'],
                 'price_multiplier' => 1.0,
                 'cashier_email' => 'cashier@example.com',
             ],
@@ -44,7 +43,6 @@ class DemoRestaurantSeeder extends Seeder
                 'phone' => '+91 98765 11223',
                 'gstin' => '29ABCDE1234F1Z6',
                 'printer_ip' => '192.168.1.60',
-                'areas' => ['Indoor', 'Patio'],
                 'price_multiplier' => 1.1,
                 'cashier_email' => 'cashier.indiranagar@example.com',
             ],
@@ -87,13 +85,6 @@ class DemoRestaurantSeeder extends Seeder
                     'is_active' => true,
                 ]
             );
-
-            foreach ($branchData['areas'] as $index => $areaName) {
-                $branch->areas()->updateOrCreate(
-                    ['name' => $areaName],
-                    ['sort_order' => $index, 'is_active' => true]
-                );
-            }
 
             foreach ($menu as $categoryName => $items) {
                 $category = $branch->categories()->updateOrCreate(

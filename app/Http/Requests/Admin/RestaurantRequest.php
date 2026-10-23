@@ -16,6 +16,7 @@ class RestaurantRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'cuisine_type' => ['nullable', 'string', 'max:255'],
             'is_active' => ['sometimes', 'boolean'],
             'owner_id' => [
                 'nullable',

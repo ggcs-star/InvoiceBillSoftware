@@ -51,9 +51,15 @@
         </button>
     </form>
 
-    <div class="mt-8 rounded-xl bg-ink-50/60 px-4 py-3 text-xs text-ink-500">
-        <div class="font-medium text-ink-600 mb-1">Demo accounts</div>
-        <div>Admin — admin@example.com / 12345678</div>
-        <div>Cashier — cashier@example.com / 12345678</div>
-    </div>
+    @if ($demoAdmin || $demoStaff->isNotEmpty())
+        <div class="mt-8 rounded-xl bg-ink-50/60 px-4 py-3 text-xs text-ink-500 space-y-0.5">
+            <div class="font-medium text-ink-600 mb-1">Demo accounts</div>
+            @if ($demoAdmin)
+                <div>Admin — {{ $demoAdmin->email }} / 12345678</div>
+            @endif
+            @foreach ($demoStaff as $staff)
+                <div>Staff ({{ $staff->branch->name }}) — {{ $staff->email }} / 12345678</div>
+            @endforeach
+        </div>
+    @endif
 @endsection

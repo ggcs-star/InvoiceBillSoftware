@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Concerns\AuthorizesBranchAccess;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Models\Branch;
@@ -14,18 +15,47 @@ use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
+    use AuthorizesBranchAccess;
+
     public function __construct(private readonly MenuService $menu)
     {
     }
 
-    public function index(Request $request, Restaurant $restaurant, Branch $branch): View
+    /**
+     * Platform-wide category directory across every restaurant and branch.
+     */
+    public function all(Request $request): View
     {
         $this->authorize('viewAny', Category::class);
+
+        $categories = Category::with('branch.restaurant')
+            ->withCount('menuItems')
+            ->when($request->filled('search'), fn ($query) => $query->where('name', 'like', '%' . $request->string('search') . '%'))
+            ->when($request->filled('restaurant_id'), fn ($query) => $query->whereHas(
+                'branch',
+                fn ($branchQuery) => $branchQuery->where('restaurant_id', $request->integer('restaurant_id'))
+            ))
+            ->when($request->filled('branch_id'), fn ($query) => $query->where('branch_id', $request->integer('branch_id')))
+            ->when($request->filled('status'), fn ($query) => $query->where('is_active', $request->input('status') === 'active'))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        $restaurants = Restaurant::orderBy('name')->get(['id', 'name']);
+        $branches = Branch::with('restaurant')->orderBy('name')->get(['id', 'name', 'restaurant_id']);
+
+        return view('admin.categories.index', compact('categories', 'restaurants', 'branches'));
+    }
+
+    public function index(Request $request, Restaurant $restaurant, Branch $branch): View
+    {
+        $this->authorizeBranch($request, $branch);
 
         $categories = $branch->categories()
             ->withCount('menuItems')
             ->when($request->filled('search'), fn ($query) => $query->where('name', 'like', '%' . $request->string('search') . '%'))
-            ->orderBy('sort_order')
+            ->when($request->filled('status'), fn ($query) => $query->where('is_active', $request->input('status') === 'active'))
+            ->latest()
             ->paginate(10)
             ->withQueryString();
 
@@ -34,7 +64,7 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request, Restaurant $restaurant, Branch $branch): RedirectResponse
     {
-        $this->authorize('create', Category::class);
+        $this->authorizeBranch($request, $branch);
 
         $this->menu->createCategory($branch, $request->validated());
 

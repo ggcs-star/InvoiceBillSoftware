@@ -21,6 +21,7 @@ class Restaurant extends Model
         'owner_id',
         'name',
         'slug',
+        'cuisine_type',
         'logo_path',
         'is_active',
     ];

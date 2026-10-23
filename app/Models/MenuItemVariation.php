@@ -2,24 +2,29 @@
 
 namespace App\Models;
 
-use App\Traits\BelongsToBranch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Area extends Model
+class MenuItemVariation extends Model
 {
-    use BelongsToBranch, HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
-        'branch_id',
+        'menu_item_id',
         'name',
-        'image_path',
+        'price',
         'sort_order',
         'is_active',
     ];
 
     protected $casts = [
+        'price' => 'decimal:2',
         'is_active' => 'boolean',
     ];
+
+    public function menuItem(): BelongsTo
+    {
+        return $this->belongsTo(MenuItem::class);
+    }
 }

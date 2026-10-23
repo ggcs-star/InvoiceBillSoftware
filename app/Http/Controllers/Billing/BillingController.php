@@ -17,7 +17,10 @@ class BillingController extends Controller
 
         $categories = $branch->categories()
             ->active()
-            ->with(['menuItems' => fn ($query) => $query->available()->orderBy('sort_order')])
+            ->with([
+                'menuItems' => fn ($query) => $query->available()->orderBy('sort_order'),
+                'menuItems.variations' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
+            ])
             ->orderBy('sort_order')
             ->get();
 
@@ -27,7 +30,7 @@ class BillingController extends Controller
             ->get();
 
         return view('billing.index', [
-            'branch' => $branch,
+            'branch' => $branch->load('restaurant'),
             'categories' => $categories,
             'openOrders' => $openOrders,
             'apiToken' => session('api_token'),
@@ -40,7 +43,7 @@ class BillingController extends Controller
 
         $order->load(['items', 'invoice']);
 
-        $branch = $order->branch;
+        $branch = $order->branch->load('restaurant');
 
         $categories = $branch->categories()
             ->active()

@@ -8,20 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('menu_item_variations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('branch_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('menu_item_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('image_path')->nullable();
+            $table->decimal('price', 10, 2);
             $table->unsignedInteger('sort_order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('menu_item_variations');
     }
 };

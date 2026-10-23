@@ -16,11 +16,16 @@
 
     <div class="space-y-4">
         <div class="bg-white rounded-2xl border border-ink-100 shadow-card p-4">
-            <form method="GET" class="flex gap-3">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or email..."
-                       class="flex-1 rounded-lg border-ink-200 shadow-sm text-sm">
+            <form method="GET" class="flex flex-wrap gap-3 items-end">
+                <div class="flex-1 min-w-[180px]">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or email..."
+                           class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                </div>
+                <x-searchable-select name="status" placeholder="All Status"
+                    :options="[['value' => 'active', 'label' => 'Active'], ['value' => 'inactive', 'label' => 'Inactive']]"
+                    :selected="request('status')" />
                 <button type="submit" class="rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-600 hover:bg-ink-50">Search</button>
-                @if (request()->filled('search'))
+                @if (request()->anyFilled(['search', 'status']))
                     <a href="{{ route('admin.branches.staff.index', [$restaurant, $branch]) }}" class="rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-600 hover:bg-ink-50">Clear</a>
                 @endif
             </form>
@@ -56,7 +61,7 @@
             </table>
         </div>
 
-        <div>{{ $staff->links() }}</div>
+        <x-pagination :paginator="$staff" />
 
         <div class="bg-white rounded-2xl border border-ink-100 shadow-card p-6 max-w-lg">
             <h3 class="font-medium mb-4">Add Staff Account</h3>

@@ -7,6 +7,7 @@ use App\Enums\SequenceType;
 use App\Helpers\TaxCalculator;
 use App\Models\Branch;
 use App\Models\MenuItem;
+use App\Models\MenuItemVariation;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
@@ -35,16 +36,20 @@ class OrderService
         ]);
     }
 
-    public function addItem(Order $order, MenuItem $menuItem, int $quantity, ?string $notes = null): OrderItem
+    public function addItem(Order $order, MenuItem $menuItem, int $quantity, ?string $notes = null, ?MenuItemVariation $variation = null): OrderItem
     {
+        $price = $variation ? $variation->price : $menuItem->price;
+        $name = $variation ? "{$menuItem->name} ({$variation->name})" : $menuItem->name;
+
         $item = $order->items()->create([
             'menu_item_id' => $menuItem->id,
-            'item_name' => $menuItem->name,
-            'unit_price' => $menuItem->price,
+            'menu_item_variation_id' => $variation?->id,
+            'item_name' => $name,
+            'unit_price' => $price,
             'gst_percentage' => $menuItem->gst_percentage,
             'quantity' => $quantity,
-            'tax_amount' => TaxCalculator::lineTax((string) $menuItem->price, $quantity, (string) $menuItem->gst_percentage),
-            'line_total' => TaxCalculator::lineTotal((string) $menuItem->price, $quantity, (string) $menuItem->gst_percentage),
+            'tax_amount' => TaxCalculator::lineTax((string) $price, $quantity, (string) $menuItem->gst_percentage),
+            'line_total' => TaxCalculator::lineTotal((string) $price, $quantity, (string) $menuItem->gst_percentage),
             'notes' => $notes,
         ]);
 
@@ -79,6 +84,13 @@ class OrderService
         $order->update(['discount_total' => $discountAmount]);
 
         return $this->recalculateTotals($order);
+    }
+
+    public function updateCustomer(Order $order, ?string $name, ?string $phone): Order
+    {
+        $order->update(['customer_name' => $name, 'customer_phone' => $phone]);
+
+        return $order;
     }
 
     public function cancel(Order $order): Order

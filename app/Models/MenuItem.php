@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\FoodType;
 use App\Traits\BelongsToBranch;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MenuItem extends Model
@@ -22,19 +24,28 @@ class MenuItem extends Model
         'price',
         'gst_percentage',
         'image_path',
+        'food_type',
         'is_available',
+        'show_on_customer_site',
         'sort_order',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'gst_percentage' => 'decimal:2',
+        'food_type' => FoodType::class,
         'is_available' => 'boolean',
+        'show_on_customer_site' => 'boolean',
     ];
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function variations(): HasMany
+    {
+        return $this->hasMany(MenuItemVariation::class);
     }
 
     public function scopeAvailable(Builder $query): Builder

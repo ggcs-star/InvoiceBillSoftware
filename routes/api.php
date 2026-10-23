@@ -19,6 +19,7 @@ Route::middleware(['auth:api', 'role:user,admin'])->prefix('v1')->group(function
     Route::put('/orders/{order}/items/{item}', [OrderController::class, 'updateItem']);
     Route::delete('/orders/{order}/items/{item}', [OrderController::class, 'removeItem']);
     Route::post('/orders/{order}/discount', [OrderController::class, 'discount']);
+    Route::put('/orders/{order}/customer', [OrderController::class, 'updateCustomer']);
     Route::post('/orders/{order}/checkout', [OrderController::class, 'checkout']);
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel']);
 

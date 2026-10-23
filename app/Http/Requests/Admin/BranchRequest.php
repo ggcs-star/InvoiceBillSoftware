@@ -18,6 +18,7 @@ class BranchRequest extends FormRequest
             'email' => ['nullable', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
             'address' => ['nullable', 'string', 'max:500'],
+            'locality' => ['nullable', 'string', 'max:255'],
             'gstin' => ['nullable', 'string', 'max:20'],
             'currency' => ['nullable', 'string', 'size:3'],
             'is_active' => ['sometimes', 'boolean'],

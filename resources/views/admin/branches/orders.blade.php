@@ -15,14 +15,9 @@
             </div>
             <div>
                 <label class="block text-xs font-medium text-ink-500 mb-1">Status</label>
-                <select name="status" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                    <option value="">All</option>
-                    @foreach ($statuses as $status)
-                        <option value="{{ $status->value }}" {{ request('status') === $status->value ? 'selected' : '' }}>
-                            {{ $status->label() }}
-                        </option>
-                    @endforeach
-                </select>
+                <x-searchable-select name="status" placeholder="All Status"
+                    :options="collect($statuses)->map(fn ($s) => ['value' => $s->value, 'label' => $s->label()])"
+                    :selected="request('status')" />
             </div>
             <div class="grid grid-cols-2 gap-2">
                 <div>
@@ -83,5 +78,5 @@
         </table>
     </div>
 
-    <div class="mt-4">{{ $orders->links() }}</div>
+    <x-pagination :paginator="$orders" />
 @endsection

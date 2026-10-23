@@ -22,12 +22,14 @@ class Printer extends Model
         'mac_address',
         'is_default',
         'is_active',
+        'is_approved',
     ];
 
     protected $casts = [
         'connection_type' => PrinterConnectionType::class,
         'is_default' => 'boolean',
         'is_active' => 'boolean',
+        'is_approved' => 'boolean',
     ];
 
     public function printJobs(): HasMany

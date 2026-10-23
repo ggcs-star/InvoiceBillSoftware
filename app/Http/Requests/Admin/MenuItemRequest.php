@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\FoodType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class MenuItemRequest extends FormRequest
 {
@@ -25,7 +27,10 @@ class MenuItemRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:1000'],
             'price' => ['required', 'numeric', 'min:0'],
             'gst_percentage' => ['required', 'numeric', 'min:0', 'max:100'],
+            'food_type' => ['required', new Enum(FoodType::class)],
+            'image' => ['nullable', 'image', 'max:2048'],
             'is_available' => ['sometimes', 'boolean'],
+            'show_on_customer_site' => ['sometimes', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ];
     }

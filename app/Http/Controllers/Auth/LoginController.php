@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,17 @@ class LoginController extends Controller
 {
     public function create(): View
     {
-        return view('auth.login');
+        $demoAdmin = User::where('role', UserRole::Admin)->oldest('id')->first();
+
+        // Only surface branch logins that actually have a menu to explore —
+        // an empty branch makes for a useless demo account.
+        $demoStaff = User::with('branch')
+            ->where('role', UserRole::User)
+            ->whereHas('branch', fn ($query) => $query->whereHas('menuItems'))
+            ->oldest('id')
+            ->get();
+
+        return view('auth.login', compact('demoAdmin', 'demoStaff'));
     }
 
     public function store(LoginRequest $request): RedirectResponse

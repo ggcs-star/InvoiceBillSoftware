@@ -2,20 +2,20 @@
 
 namespace App\Providers;
 
-use App\Models\Area;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\MenuItem;
+use App\Models\MenuItemVariation;
 use App\Models\Order;
 use App\Models\Printer;
 use App\Models\Restaurant;
 use App\Models\User;
-use App\Policies\AreaPolicy;
 use App\Policies\BranchPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\InvoicePolicy;
 use App\Policies\MenuItemPolicy;
+use App\Policies\MenuItemVariationPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\PrinterPolicy;
 use App\Policies\RestaurantPolicy;
@@ -33,9 +33,9 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Restaurant::class => RestaurantPolicy::class,
         Branch::class => BranchPolicy::class,
-        Area::class => AreaPolicy::class,
         Category::class => CategoryPolicy::class,
         MenuItem::class => MenuItemPolicy::class,
+        MenuItemVariation::class => MenuItemVariationPolicy::class,
         Printer::class => PrinterPolicy::class,
         Order::class => OrderPolicy::class,
         Invoice::class => InvoicePolicy::class,

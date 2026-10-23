@@ -19,6 +19,7 @@ class Branch extends Model
         'email',
         'phone',
         'address',
+        'locality',
         'gstin',
         'currency',
         'is_active',
@@ -36,11 +37,6 @@ class Branch extends Model
     public function staff(): HasMany
     {
         return $this->hasMany(User::class);
-    }
-
-    public function areas(): HasMany
-    {
-        return $this->hasMany(Area::class);
     }
 
     public function printers(): HasMany
@@ -70,7 +66,7 @@ class Branch extends Model
 
     public function defaultPrinter(): ?Printer
     {
-        return $this->printers()->where('is_default', true)->where('is_active', true)->first()
-            ?? $this->printers()->where('is_active', true)->first();
+        return $this->printers()->where('is_default', true)->where('is_active', true)->where('is_approved', true)->first()
+            ?? $this->printers()->where('is_active', true)->where('is_approved', true)->first();
     }
 }
