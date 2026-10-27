@@ -81,15 +81,6 @@
                             </svg>
                             Menu Items
                         </a>
-                        <a href="{{ route('admin.printers.index') }}"
-                           class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition {{ request()->routeIs('admin.printers.index') ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/30' : 'text-ink-500 hover:bg-brand-50 hover:text-brand-600' }}">
-                            <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 6 2 18 2 18 9"/>
-                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-                                <rect x="6" y="14" width="12" height="8"/>
-                            </svg>
-                            Printers
-                        </a>
                         <a href="{{ route('admin.orders.index') }}"
                            class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition {{ request()->routeIs('admin.orders.index') ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/30' : 'text-ink-500 hover:bg-brand-50 hover:text-brand-600' }}">
                             <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -98,6 +89,15 @@
                                 <path d="M3 4h2l1.7 10.2a2 2 0 0 0 2 1.8h7.9a2 2 0 0 0 2-1.6L20 8H6.2"/>
                             </svg>
                             Orders
+                        </a>
+                        <a href="{{ route('admin.printers.index') }}"
+                           class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition {{ request()->routeIs('admin.printers.index') ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/30' : 'text-ink-500 hover:bg-brand-50 hover:text-brand-600' }}">
+                            <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 6 2 18 2 18 9"/>
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                                <rect x="6" y="14" width="12" height="8"/>
+                            </svg>
+                            Printers
                         </a>
                         <a href="{{ route('admin.staff.index') }}"
                            class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition {{ request()->routeIs('admin.staff.index') ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/30' : 'text-ink-500 hover:bg-brand-50 hover:text-brand-600' }}">

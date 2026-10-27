@@ -37,23 +37,17 @@
                 </svg>
             </div>
 
-            <div class="relative w-full max-w-sm">
-                <div class="rounded-3xl bg-white p-8 shadow-xl shadow-brand-900/10 border border-ink-100/70">
+            <div class="relative w-full max-w-md">
+                <div class="rounded-3xl bg-white p-10 shadow-xl shadow-brand-900/10 border border-ink-100/70">
                     {{-- Logo --}}
-                    <div class="mb-7 flex flex-col items-center text-center">
-                        <span class="mb-2 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-500">
-                            <svg viewBox="0 0 48 48" class="h-8 w-8" fill="currentColor">
-                                <circle cx="16" cy="17" r="7"/>
-                                <circle cx="32" cy="17" r="7"/>
-                                <circle cx="24" cy="12" r="9"/>
-                                <rect x="14" y="21" width="20" height="10" rx="2"/>
-                                <rect x="16" y="31" width="16" height="6" rx="1.5"/>
-                            </svg>
+                    <div class="mb-8 flex flex-col items-center text-center">
+                        <span class="mb-3 flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-sm">
+                            <img src="{{ asset('images/logo_jagdai.jpeg') }}" alt="Jagdai Cloud Kitchen" class="h-20 w-20 object-contain">
                         </span>
-                        <div class="text-xl font-extrabold tracking-tight">
+                        <div class="text-2xl font-extrabold tracking-tight">
                             <span class="text-ink-900">Jagdai</span> <span class="text-brand-500">Food</span>
                         </div>
-                        <div class="mt-1.5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-500">
+                        <div class="mt-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">
                             <span class="h-px w-5 bg-ink-200"></span>
                             Cloud Kitchen
                             <span class="h-px w-5 bg-ink-200"></span>
