@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@example.com'],
             [
-                'name' => 'Platform Admin',
+                'name' => 'Admin',
                 'password' => Hash::make('12345678'),
                 'role' => UserRole::Admin,
                 'branch_id' => null,
