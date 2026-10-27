@@ -31,14 +31,10 @@
             </div>
             <form method="POST" :action="storeUrl" class="p-6 space-y-4">
                 @csrf
-                <div>
+                <div @searchable-select-change="restaurantId = $event.detail.value">
                     <label class="block text-xs font-medium text-ink-500 mb-1">Restaurant</label>
-                    <select x-model="restaurantId" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                        <option value="" disabled>Select a restaurant</option>
-                        @foreach ($restaurants as $restaurant)
-                            <option value="{{ $restaurant->id }}">{{ $restaurant->name }}</option>
-                        @endforeach
-                    </select>
+                    <x-searchable-select name="restaurant_id_picker" placeholder="Select a restaurant"
+                        :options="$restaurants->map(fn ($r) => ['value' => $r->id, 'label' => $r->name])" />
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Branch Name</label>
@@ -74,8 +70,14 @@
         <form method="GET" class="flex flex-wrap gap-3 items-end">
             <div class="flex-1 min-w-[200px]">
                 <label class="block text-xs font-medium text-ink-500 mb-1">Search</label>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Branch name..."
-                       class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                <div class="relative">
+                    <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Branch name..."
+                           class="w-full rounded-lg border-ink-200 bg-white pl-10 pr-4 py-2 shadow-sm text-sm">
+                </div>
             </div>
             <div>
                 <label class="block text-xs font-medium text-ink-500 mb-1">Restaurant</label>

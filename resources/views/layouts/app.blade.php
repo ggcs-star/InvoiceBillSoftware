@@ -6,23 +6,24 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-token" content="{{ session('api_token') }}">
     <title>@yield('title', 'Jagdai Cloud Kitchen')</title>
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo_jagdai.jpeg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-brand-50/40 text-ink-900 antialiased">
     <div class="min-h-screen flex">
         {{-- Sidebar --}}
-        <aside class="w-64 shrink-0 bg-white border-r border-ink-100 flex flex-col">
-            <div class="flex items-center gap-2.5 px-6 py-5">
-                <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500 text-white shadow-sm shadow-brand-500/40">
-                    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2c-3.5 0-6 2.8-6 6.2 0 4.4 6 13.3 6 13.3s6-8.9 6-13.3C18 4.8 15.5 2 12 2Z"/>
-                        <circle cx="12" cy="8.2" r="2.2"/>
-                    </svg>
+        <aside class="relative w-64 shrink-0 overflow-hidden bg-brand-50 border-r border-ink-100 flex flex-col">
+            <div class="flex items-center gap-3 px-6 py-5">
+                <span class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
+                    <img src="{{ asset('images/logo_jagdai.jpeg') }}" alt="Jagdai Cloud Kitchen" class="h-12 w-12 object-contain">
                 </span>
-                <span class="text-lg font-bold tracking-tight text-ink-900">Jagdai Cloud Kitchen</span>
+                <div class="leading-tight">
+                    <div class="text-base font-bold tracking-tight text-ink-900">Jagdai Cloud</div>
+                    <div class="-mt-0.5 text-base font-bold tracking-tight text-brand-500">Kitchen</div>
+                </div>
             </div>
 
-            <nav class="flex-1 overflow-y-auto px-4 py-2 space-y-1 text-sm">
+            <nav class="relative flex-1 overflow-y-auto px-4 py-2 space-y-1 text-sm">
                 @auth
                     @php
                         $navItem = function (string $route, string $label, string $icon, bool $active) {
@@ -46,21 +47,17 @@
                         <a href="{{ route('admin.restaurants.index') }}"
                            class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition {{ request()->routeIs('admin.restaurants.*') && ! request()->routeIs('admin.branches.*') ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/30' : 'text-ink-500 hover:bg-brand-50 hover:text-brand-600' }}">
                             <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 10 5 4h14l1 6"/>
-                                <path d="M4 10a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0"/>
-                                <path d="M5 10v9h14v-9"/>
-                                <rect x="9.5" y="14" width="5" height="5"/>
+                                <path d="M6 3v8a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V3"/>
+                                <line x1="8" y1="13" x2="8" y2="21"/>
+                                <path d="M17 3c-1.7 0-3 2-3 5s1.3 5 3 5v8"/>
                             </svg>
                             Restaurants
                         </a>
                         <a href="{{ route('admin.branches.index') }}"
                            class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition {{ request()->routeIs('admin.branches.index') ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/30' : 'text-ink-500 hover:bg-brand-50 hover:text-brand-600' }}">
                             <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="6" cy="6" r="3"/>
-                                <circle cx="6" cy="18" r="3"/>
-                                <circle cx="18" cy="6" r="3"/>
-                                <path d="M6 9v6"/>
-                                <path d="M9 6h6a3 3 0 0 1 3 3v6"/>
+                                <path d="M12 21s7-7.2 7-12a7 7 0 0 0-14 0c0 4.8 7 12 7 12Z"/>
+                                <circle cx="12" cy="9" r="2.5"/>
                             </svg>
                             Branches
                         </a>
@@ -77,9 +74,10 @@
                         <a href="{{ route('admin.menu-items.index') }}"
                            class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition {{ request()->routeIs('admin.menu-items.index') ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/30' : 'text-ink-500 hover:bg-brand-50 hover:text-brand-600' }}">
                             <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M6 3v8a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V3"/>
-                                <line x1="8" y1="13" x2="8" y2="21"/>
-                                <path d="M17 3c-1.7 0-3 2-3 5s1.3 5 3 5v8"/>
+                                <path d="M6 3h9l3 3v15H6Z"/>
+                                <path d="M15 3v3h3"/>
+                                <line x1="9" y1="11" x2="15" y2="11"/>
+                                <line x1="9" y1="15" x2="15" y2="15"/>
                             </svg>
                             Menu Items
                         </a>
@@ -219,9 +217,10 @@
                             <a href="{{ route('admin.branches.menu-items.index', [$myRestaurant, $myBranch]) }}"
                                class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition {{ request()->routeIs('admin.branches.menu-items.*') ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/30' : 'text-ink-500 hover:bg-brand-50 hover:text-brand-600' }}">
                                 <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M6 3v8a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V3"/>
-                                    <line x1="8" y1="13" x2="8" y2="21"/>
-                                    <path d="M17 3c-1.7 0-3 2-3 5s1.3 5 3 5v8"/>
+                                    <path d="M6 3h9l3 3v15H6Z"/>
+                                    <path d="M15 3v3h3"/>
+                                    <line x1="9" y1="11" x2="15" y2="11"/>
+                                    <line x1="9" y1="15" x2="15" y2="15"/>
                                 </svg>
                                 Menu Items
                             </a>
@@ -269,6 +268,13 @@
                         </a>
                     @endif
                 @endauth
+
+                <div class="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center select-none" aria-hidden="true">
+                    <svg viewBox="0 0 160 170" class="h-36 w-36 text-brand-100">
+                        <path d="M80 18c-20 0-33 14-33 30 0 9 4.5 15.5 10 19.5-2 3-3.5 7.5-3.5 12 0 11 9 17.5 26.5 17.5S106.5 90.5 106.5 79.5c0-4.5-1.5-9-3.5-12 5.5-4 10-10.5 10-19.5 0-16-13-30-33-30Z" fill="currentColor"/>
+                        <path d="M-10 150c25-22 45-28 90-17s65 6 90-17v47H-10Z" fill="currentColor" opacity=".6"/>
+                    </svg>
+                </div>
             </nav>
 
             <div class="mt-auto border-t border-ink-100 p-4">

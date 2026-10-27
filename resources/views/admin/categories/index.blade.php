@@ -6,11 +6,45 @@
 @section('content')
 <div x-data="{
         addOpen: false,
+        openViewFor: null,
+        openEditFor: null,
         restaurantId: '',
         branchId: '',
+        restaurantOpen: false,
+        restaurantQuery: '',
+        branchOpen: false,
+        branchQuery: '',
+        restaurants: @js($restaurants->map(fn ($r) => ['id' => $r->id, 'name' => $r->name])),
         branches: @js($branches->map(fn ($b) => ['id' => $b->id, 'name' => $b->name, 'restaurant_id' => $b->restaurant_id])),
         get branchOptions() {
             return this.branches.filter((b) => String(b.restaurant_id) === String(this.restaurantId));
+        },
+        get filteredRestaurants() {
+            if (!this.restaurantQuery) return this.restaurants;
+            const needle = this.restaurantQuery.toLowerCase();
+            return this.restaurants.filter((r) => r.name.toLowerCase().includes(needle));
+        },
+        get filteredBranchOptions() {
+            if (!this.branchQuery) return this.branchOptions;
+            const needle = this.branchQuery.toLowerCase();
+            return this.branchOptions.filter((b) => b.name.toLowerCase().includes(needle));
+        },
+        get selectedRestaurantName() {
+            return (this.restaurants.find((r) => String(r.id) === this.restaurantId) || {}).name ?? 'Select a restaurant';
+        },
+        get selectedBranchName() {
+            return (this.branches.find((b) => String(b.id) === this.branchId) || {}).name ?? 'Select a branch';
+        },
+        selectRestaurant(id, name) {
+            this.restaurantId = String(id);
+            this.branchId = '';
+            this.restaurantOpen = false;
+            this.restaurantQuery = '';
+        },
+        selectBranch(id, name) {
+            this.branchId = String(id);
+            this.branchOpen = false;
+            this.branchQuery = '';
         },
         get storeUrl() {
             return '/admin/restaurants/' + this.restaurantId + '/branches/' + this.branchId + '/categories';
@@ -38,21 +72,67 @@
                 @csrf
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Restaurant</label>
-                    <select x-model="restaurantId" @change="branchId = ''" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                        <option value="" disabled>Select a restaurant</option>
-                        @foreach ($restaurants as $restaurant)
-                            <option value="{{ $restaurant->id }}">{{ $restaurant->name }}</option>
-                        @endforeach
-                    </select>
+                    <div class="relative" @click.outside="restaurantOpen = false">
+                        <button type="button" @click="restaurantOpen = !restaurantOpen; branchOpen = false"
+                                class="w-full flex items-center justify-between gap-2 rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm text-left shadow-sm">
+                            <span x-text="selectedRestaurantName" class="truncate" :class="restaurantId ? 'text-ink-900' : 'text-ink-500'"></span>
+                            <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-ink-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div x-show="restaurantOpen" x-cloak x-transition class="absolute z-30 mt-1 w-full rounded-lg border border-ink-100 bg-white shadow-lg">
+                            <div class="p-2 border-b border-ink-100">
+                                <div class="relative">
+                                    <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="7"/>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                    </svg>
+                                    <input type="text" x-model="restaurantQuery" placeholder="Search restaurants..."
+                                           class="w-full rounded-md border-ink-200 pl-8 pr-2 py-1.5 text-sm">
+                                </div>
+                            </div>
+                            <ul class="max-h-56 overflow-y-auto py-1">
+                                <template x-for="r in filteredRestaurants" :key="r.id">
+                                    <li @click="selectRestaurant(r.id, r.name)" x-text="r.name"
+                                        class="px-3 py-1.5 text-sm cursor-pointer hover:bg-brand-50"
+                                        :class="String(r.id) === restaurantId ? 'bg-brand-50 text-brand-600 font-medium' : 'text-ink-700'"></li>
+                                </template>
+                                <li x-show="filteredRestaurants.length === 0" class="px-3 py-1.5 text-sm text-ink-400">No matches</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Branch</label>
-                    <select x-model="branchId" required :disabled="!restaurantId" class="w-full rounded-lg border-ink-200 shadow-sm text-sm disabled:bg-ink-50">
-                        <option value="" disabled>Select a branch</option>
-                        <template x-for="branch in branchOptions" :key="branch.id">
-                            <option :value="branch.id" x-text="branch.name"></option>
-                        </template>
-                    </select>
+                    <div class="relative" @click.outside="branchOpen = false">
+                        <button type="button" :disabled="!restaurantId" @click="branchOpen = !branchOpen; restaurantOpen = false"
+                                class="w-full flex items-center justify-between gap-2 rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm text-left shadow-sm disabled:bg-ink-50 disabled:cursor-not-allowed">
+                            <span x-text="selectedBranchName" class="truncate" :class="branchId ? 'text-ink-900' : 'text-ink-500'"></span>
+                            <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-ink-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div x-show="branchOpen" x-cloak x-transition class="absolute z-30 mt-1 w-full rounded-lg border border-ink-100 bg-white shadow-lg">
+                            <div class="p-2 border-b border-ink-100">
+                                <div class="relative">
+                                    <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="7"/>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                    </svg>
+                                    <input type="text" x-model="branchQuery" placeholder="Search branches..."
+                                           class="w-full rounded-md border-ink-200 pl-8 pr-2 py-1.5 text-sm">
+                                </div>
+                            </div>
+                            <ul class="max-h-56 overflow-y-auto py-1">
+                                <template x-for="b in filteredBranchOptions" :key="b.id">
+                                    <li @click="selectBranch(b.id, b.name)" x-text="b.name"
+                                        class="px-3 py-1.5 text-sm cursor-pointer hover:bg-brand-50"
+                                        :class="String(b.id) === branchId ? 'bg-brand-50 text-brand-600 font-medium' : 'text-ink-700'"></li>
+                                </template>
+                                <li x-show="filteredBranchOptions.length === 0" class="px-3 py-1.5 text-sm text-ink-400">No matches</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Category Name</label>
@@ -70,8 +150,14 @@
         <form method="GET" class="flex flex-wrap gap-3 items-end">
             <div class="flex-1 min-w-[200px]">
                 <label class="block text-xs font-medium text-ink-500 mb-1">Search</label>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Category name..."
-                       class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                <div class="relative">
+                    <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Category name..."
+                           class="w-full rounded-lg border-ink-200 bg-white pl-10 pr-4 py-2 shadow-sm text-sm">
+                </div>
             </div>
             <div>
                 <label class="block text-xs font-medium text-ink-500 mb-1">Restaurant</label>
@@ -138,16 +224,23 @@
                         </td>
                         <td class="px-5 py-3 text-right" onclick="event.stopPropagation()">
                             <div class="inline-flex gap-2">
-                                <a href="{{ route('admin.branches.categories.index', [$category->branch->restaurant, $category->branch]) }}"
-                                   class="flex h-7 w-7 items-center justify-center rounded-lg border border-ink-200 text-ink-500 hover:bg-ink-50">
+                                <button type="button" title="View" @click="openViewFor = {{ $category->id }}"
+                                        class="flex h-7 w-7 items-center justify-center rounded-lg border border-ink-200 text-ink-500 hover:bg-ink-50">
+                                    <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                                <button type="button" title="Edit" @click="openEditFor = {{ $category->id }}"
+                                        class="flex h-7 w-7 items-center justify-center rounded-lg border border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100">
                                     <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M12 20h9"/>
                                         <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
                                     </svg>
-                                </a>
+                                </button>
                                 <form method="POST" action="{{ route('admin.branches.categories.destroy', [$category->branch->restaurant, $category->branch, $category]) }}" onsubmit="return confirm('Remove this category?')">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="flex h-7 w-7 items-center justify-center rounded-lg border border-red-200 text-red-600 hover:bg-red-50">
+                                    <button type="submit" title="Delete" class="flex h-7 w-7 items-center justify-center rounded-lg border border-red-200 bg-red-50 text-red-600 hover:bg-red-100">
                                         <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                             <polyline points="3 6 5 6 21 6"/>
                                             <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
@@ -163,6 +256,91 @@
             </tbody>
         </table>
     </div>
+
+    {{-- View modals (one per category, kept outside the <table> so they're valid HTML) --}}
+    @foreach ($categories as $category)
+        <div x-show="openViewFor === {{ $category->id }}" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden" @click.outside="openViewFor = null">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+                    <h3 class="text-lg font-bold text-ink-900">Category Details</h3>
+                    <button type="button" @click="openViewFor = null" class="text-ink-400 hover:text-ink-700">
+                        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-600">
+                            {{ Str::substr($category->name, 0, 1) }}
+                        </span>
+                        <div>
+                            <div class="text-base font-bold text-ink-900">{{ $category->name }}</div>
+                            <div class="text-xs font-medium {{ $category->is_active ? 'text-green-600' : 'text-ink-400' }}">{{ $category->is_active ? 'Active' : 'Inactive' }}</div>
+                        </div>
+                    </div>
+                    <dl class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                        <div>
+                            <dt class="text-xs text-ink-400">Restaurant</dt>
+                            <dd class="font-medium text-ink-900">{{ $category->branch->restaurant->name }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs text-ink-400">Branch</dt>
+                            <dd class="font-medium text-ink-900">{{ $category->branch->name }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs text-ink-400">Menu Items</dt>
+                            <dd class="font-medium text-ink-900">{{ $category->menu_items_count }}</dd>
+                        </div>
+                    </dl>
+                    <div class="flex justify-end pt-2">
+                        <button type="button" @click="openViewFor = null" class="rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-600 hover:bg-ink-50">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    {{-- Edit modals (one per category, kept outside the <table> so they're valid HTML) --}}
+    @foreach ($categories as $category)
+        <div x-show="openEditFor === {{ $category->id }}" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden" @click.outside="openEditFor = null">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+                    <h3 class="text-lg font-bold text-ink-900">Edit Category</h3>
+                    <button type="button" @click="openEditFor = null" class="text-ink-400 hover:text-ink-700">
+                        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route('admin.branches.categories.update', [$category->branch->restaurant, $category->branch, $category]) }}" class="p-6 space-y-4">
+                    @csrf
+                    @method('PUT')
+                    <div>
+                        <label class="block text-xs font-medium text-ink-500 mb-1">Restaurant &amp; Branch</label>
+                        <div class="rounded-lg border border-ink-100 bg-ink-50/60 px-3 py-2 text-sm text-ink-600">
+                            {{ $category->branch->restaurant->name }} — {{ $category->branch->name }}
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-ink-500 mb-1">Category Name</label>
+                        <input type="text" name="name" value="{{ $category->name }}" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    </div>
+                    <label class="flex items-center gap-2 text-sm text-ink-700">
+                        <input type="hidden" name="is_active" value="0">
+                        <input type="checkbox" name="is_active" value="1" {{ $category->is_active ? 'checked' : '' }} class="rounded border-ink-300 text-brand-600">
+                        Active
+                    </label>
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" @click="openEditFor = null" class="rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-600 hover:bg-ink-50">Cancel</button>
+                        <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
 
     <x-pagination :paginator="$categories" />
 </div>

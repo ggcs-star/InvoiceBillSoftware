@@ -18,8 +18,15 @@
         <div class="bg-white rounded-2xl border border-ink-100 shadow-card p-4">
             <form method="GET" class="flex flex-wrap gap-3 items-end">
                 <div class="flex-1 min-w-[180px]">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search your menu item here"
-                           class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <label class="block text-xs font-medium text-ink-500 mb-1">Search</label>
+                    <div class="relative">
+                        <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="7"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search your menu item here"
+                               class="w-full rounded-lg border-ink-200 bg-white pl-10 pr-4 py-2 shadow-sm text-sm">
+                    </div>
                 </div>
                 <x-searchable-select name="category_id" placeholder="All Categories"
                     :options="$categories->map(fn ($c) => ['value' => $c->id, 'label' => $c->name])"
@@ -31,83 +38,96 @@
                 @if (request()->anyFilled(['search', 'category_id', 'availability']))
                     <a href="{{ route('admin.branches.menu-items.index', [$restaurant, $branch]) }}" class="rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-600 hover:bg-ink-50">Clear</a>
                 @endif
-                <button type="button" @click="addOpen = !addOpen"
+                <button type="button" @click="addOpen = true"
                         class="ml-auto rounded-lg bg-brand-600 px-4 py-2 text-white text-sm font-medium hover:bg-brand-700">
                     + Add Menu Item
                 </button>
             </form>
         </div>
 
-        <div x-show="addOpen" x-cloak class="bg-white rounded-2xl border border-ink-100 shadow-card p-6">
-            <h3 class="font-medium mb-4">Add Menu Item</h3>
+        {{-- Add Menu Item modal --}}
+        <div x-show="addOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4 overflow-y-auto">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden my-8" @click.outside="addOpen = false">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+                    <h3 class="text-lg font-bold text-ink-900">Add Menu Item</h3>
+                    <button type="button" @click="addOpen = false" class="text-ink-400 hover:text-ink-700">
+                        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
 
-            @if ($categories->isEmpty())
-                <p class="text-sm text-ink-500">
-                    Add an <a href="{{ route('admin.branches.categories.index', [$restaurant, $branch]) }}" class="text-brand-600 hover:underline">item category</a> first before adding menu items.
-                </p>
-            @else
-                <form method="POST" action="{{ route('admin.branches.menu-items.store', [$restaurant, $branch]) }}" enctype="multipart/form-data" class="space-y-4">
-                    @csrf
-                    <div class="grid grid-cols-6 gap-3 items-end">
-                        <div>
-                            <label class="block text-xs font-medium text-ink-500 mb-1">Category</label>
-                            <select name="category_id" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
+                @if ($categories->isEmpty())
+                    <p class="p-6 text-sm text-ink-500">
+                        Add an <a href="{{ route('admin.branches.categories.index', [$restaurant, $branch]) }}" class="text-brand-600 hover:underline">item category</a> first before adding menu items.
+                    </p>
+                @else
+                    <form method="POST" action="{{ route('admin.branches.menu-items.store', [$restaurant, $branch]) }}" enctype="multipart/form-data" class="p-6 space-y-4">
+                        @csrf
+                        <div class="grid grid-cols-4 gap-3 items-end">
+                            <div>
+                                <label class="block text-xs font-medium text-ink-500 mb-1">Category</label>
+                                <x-searchable-select name="category_id" placeholder="Select a category"
+                                    :options="$categories->map(fn ($c) => ['value' => $c->id, 'label' => $c->name])" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-ink-500 mb-1">Item Name</label>
+                                <input type="text" name="name" required placeholder="e.g. Margherita Pizza" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-ink-500 mb-1">Price</label>
+                                <input type="number" step="0.01" name="price" required placeholder="249.00" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-ink-500 mb-1">GST %</label>
+                                <input type="number" step="0.01" name="gst_percentage" required placeholder="5" value="5" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                            </div>
                         </div>
-                        <div class="col-span-2">
-                            <label class="block text-xs font-medium text-ink-500 mb-1">Item Name</label>
-                            <input type="text" name="name" required placeholder="e.g. Margherita Pizza" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-ink-500 mb-1">Price</label>
-                            <input type="number" step="0.01" name="price" required placeholder="249.00" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-ink-500 mb-1">GST %</label>
-                            <input type="number" step="0.01" name="gst_percentage" required placeholder="5" value="5" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                        </div>
+
                         <div>
                             <label class="block text-xs font-medium text-ink-500 mb-1">Image</label>
                             <input type="file" name="image" accept="image/*" class="w-full text-sm rounded-lg border-ink-200 shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-ink-900 file:px-3 file:py-1.5 file:text-white file:text-xs">
                         </div>
-                    </div>
 
-                    <div>
-                        <label class="block text-xs font-medium text-ink-500 mb-1">Description</label>
-                        <textarea name="description" rows="2" placeholder="Short description shown to customers" class="w-full rounded-lg border-ink-200 shadow-sm text-sm"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-medium text-ink-500 mb-2">Food Type</label>
-                        <div class="flex gap-3">
-                            @foreach (\App\Enums\FoodType::cases() as $foodType)
-                                <label class="flex items-center gap-2 rounded-lg border border-ink-200 px-3 py-2 text-sm cursor-pointer has-[:checked]:border-brand-400 has-[:checked]:bg-brand-50">
-                                    <input type="radio" name="food_type" value="{{ $foodType->value }}" {{ $loop->first ? 'checked' : '' }} class="text-brand-600">
-                                    <x-food-type-icon :type="$foodType" />
-                                    {{ $foodType->label() }}
-                                </label>
-                            @endforeach
+                        <div>
+                            <label class="block text-xs font-medium text-ink-500 mb-1">Description</label>
+                            <textarea name="description" rows="2" placeholder="Short description shown to customers" class="w-full rounded-lg border-ink-200 shadow-sm text-sm"></textarea>
                         </div>
-                    </div>
 
-                    <div class="flex items-center gap-6">
-                        <label class="flex items-center gap-2 text-sm text-ink-700">
-                            <input type="hidden" name="is_available" value="0">
-                            <input type="checkbox" name="is_available" value="1" checked class="rounded border-ink-300 text-brand-600">
-                            Available
-                        </label>
-                        <label class="flex items-center gap-2 text-sm text-ink-700">
-                            <input type="hidden" name="show_on_customer_site" value="0">
-                            <input type="checkbox" name="show_on_customer_site" value="1" checked class="rounded border-ink-300 text-brand-600">
-                            Show on Customer Site
-                        </label>
-                        <button type="submit" class="ml-auto rounded-lg bg-brand-600 px-4 py-2 text-white text-sm font-medium hover:bg-brand-700">Add Item</button>
-                    </div>
-                </form>
-            @endif
+                        <div>
+                            <label class="block text-xs font-medium text-ink-500 mb-2">Food Type</label>
+                            <div class="flex gap-3">
+                                @foreach (\App\Enums\FoodType::cases() as $foodType)
+                                    <label class="flex items-center gap-2 rounded-lg border border-ink-200 px-3 py-2 text-sm cursor-pointer has-[:checked]:border-brand-400 has-[:checked]:bg-brand-50">
+                                        <input type="radio" name="food_type" value="{{ $foodType->value }}" {{ $loop->first ? 'checked' : '' }} class="text-brand-600">
+                                        <x-food-type-icon :type="$foodType" />
+                                        {{ $foodType->label() }}
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-6">
+                            <label class="flex items-center gap-2 text-sm text-ink-700">
+                                <input type="hidden" name="is_available" value="0">
+                                <input type="checkbox" name="is_available" value="1" checked class="rounded border-ink-300 text-brand-600">
+                                Available
+                            </label>
+                            <label class="flex items-center gap-2 text-sm text-ink-700">
+                                <input type="hidden" name="show_on_customer_site" value="0">
+                                <input type="checkbox" name="show_on_customer_site" value="1" checked class="rounded border-ink-300 text-brand-600">
+                                Show on Customer Site
+                            </label>
+                        </div>
+
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button type="button" @click="addOpen = false" class="rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-600 hover:bg-ink-50">Cancel</button>
+                            <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">Add Item</button>
+                        </div>
+                    </form>
+                @endif
+            </div>
         </div>
 
         <div class="bg-white rounded-2xl border border-ink-100 shadow-card overflow-x-auto">

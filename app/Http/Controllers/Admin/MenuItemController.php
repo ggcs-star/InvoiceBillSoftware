@@ -6,6 +6,7 @@ use App\Http\Controllers\Concerns\AuthorizesBranchAccess;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\MenuItemRequest;
 use App\Models\Branch;
+use App\Models\Category;
 use App\Models\MenuItem;
 use App\Models\Restaurant;
 use App\Services\MenuService;
@@ -29,13 +30,17 @@ class MenuItemController extends Controller
     {
         $this->authorize('viewAny', MenuItem::class);
 
-        $menuItems = MenuItem::with(['branch.restaurant', 'category', 'variations' => fn ($query) => $query->orderBy('sort_order')])
+        $menuItems = MenuItem::with(['branch.restaurant', 'branch.categories', 'category', 'variations' => fn ($query) => $query->orderBy('sort_order')])
             ->when($request->filled('search'), fn ($query) => $query->where('name', 'like', '%' . $request->string('search') . '%'))
             ->when($request->filled('restaurant_id'), fn ($query) => $query->whereHas(
                 'branch',
                 fn ($branchQuery) => $branchQuery->where('restaurant_id', $request->integer('restaurant_id'))
             ))
             ->when($request->filled('branch_id'), fn ($query) => $query->where('branch_id', $request->integer('branch_id')))
+            ->when($request->filled('category'), fn ($query) => $query->whereHas(
+                'category',
+                fn ($categoryQuery) => $categoryQuery->where('name', $request->string('category'))
+            ))
             ->when($request->filled('availability'), fn ($query) => $query->where('is_available', $request->input('availability') === 'available'))
             ->latest()
             ->paginate(10)
@@ -45,8 +50,18 @@ class MenuItemController extends Controller
         $branches = Branch::with(['restaurant', 'categories' => fn ($query) => $query->orderBy('sort_order')])
             ->orderBy('name')
             ->get(['id', 'name', 'restaurant_id']);
+        $categoryNames = Category::query()->distinct()->orderBy('name')->pluck('name');
 
-        return view('admin.menu-items.index', compact('menuItems', 'restaurants', 'branches'));
+        $stats = [
+            'total_items' => MenuItem::count(),
+            'new_this_week' => MenuItem::where('created_at', '>=', now()->startOfWeek())->count(),
+            'restaurants' => Restaurant::where('is_active', true)->count(),
+            'categories' => Category::where('is_active', true)->count(),
+            'price_min' => (float) (MenuItem::min('price') ?? 0),
+            'price_max' => (float) (MenuItem::max('price') ?? 0),
+        ];
+
+        return view('admin.menu-items.index', compact('menuItems', 'restaurants', 'branches', 'categoryNames', 'stats'));
     }
 
     /**

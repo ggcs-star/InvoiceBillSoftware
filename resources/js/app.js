@@ -31,6 +31,7 @@ Alpine.data('searchableSelect', ({ options, selected, placeholder }) => ({
         this.selectedLabel = value ? label : this.placeholder;
         this.open = false;
         this.query = '';
+        this.$dispatch('searchable-select-change', { value: this.selectedValue, label: this.selectedLabel });
     },
 }));
 
