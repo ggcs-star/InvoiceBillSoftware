@@ -21,43 +21,43 @@
             <div>
                 <label class="block text-sm font-medium text-ink-700">Branch Name</label>
                 <input type="text" name="name" value="{{ old('name', $branch->name) }}" required
-                       class="mt-1 block w-full rounded-lg border-ink-200 shadow-sm">
+                       class="mt-1 block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm">
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-ink-700">Email</label>
                     <input type="email" name="email" value="{{ old('email', $branch->email) }}"
-                           class="mt-1 block w-full rounded-lg border-ink-200 shadow-sm">
+                           class="mt-1 block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-ink-700">Phone</label>
                     <input type="text" name="phone" value="{{ old('phone', $branch->phone) }}"
-                           class="mt-1 block w-full rounded-lg border-ink-200 shadow-sm">
+                           class="mt-1 block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm">
                 </div>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-ink-700">Area / Locality</label>
-                <input type="text" name="locality" value="{{ old('locality', $branch->locality) }}" placeholder="e.g. Indiranagar"
-                       class="mt-1 block w-full rounded-lg border-ink-200 shadow-sm">
+                <input type="text" name="locality" value="{{ old('locality', $branch->locality) }}" placeholder="e.g. Naranpura"
+                       class="mt-1 block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-ink-700">Address</label>
-                <textarea name="address" rows="2" class="mt-1 block w-full rounded-lg border-ink-200 shadow-sm">{{ old('address', $branch->address) }}</textarea>
+                <textarea name="address" rows="2" class="mt-1 block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm">{{ old('address', $branch->address) }}</textarea>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-ink-700">GSTIN</label>
                     <input type="text" name="gstin" value="{{ old('gstin', $branch->gstin) }}"
-                           class="mt-1 block w-full rounded-lg border-ink-200 shadow-sm">
+                           class="mt-1 block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-ink-700">Currency</label>
                     <input type="text" name="currency" value="{{ old('currency', $branch->currency) }}" maxlength="3"
-                           class="mt-1 block w-full rounded-lg border-ink-200 shadow-sm">
+                           class="mt-1 block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm">
                 </div>
             </div>
 

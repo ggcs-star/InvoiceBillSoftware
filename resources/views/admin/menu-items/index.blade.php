@@ -131,7 +131,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Restaurant</label>
-                        <select x-model="restaurantId" @change="branchId = ''" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <select x-model="restaurantId" @change="branchId = ''" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                             <option value="" disabled>Select a restaurant</option>
                             @foreach ($restaurants as $restaurant)
                                 <option value="{{ $restaurant->id }}">{{ $restaurant->name }}</option>
@@ -140,7 +140,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Branch</label>
-                        <select x-model="branchId" required :disabled="!restaurantId" class="w-full rounded-lg border-ink-200 shadow-sm text-sm disabled:bg-ink-50">
+                        <select x-model="branchId" required :disabled="!restaurantId" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm disabled:bg-ink-50">
                             <option value="" disabled>Select a branch</option>
                             <template x-for="branch in branchOptions" :key="branch.id">
                                 <option :value="branch.id" x-text="branch.name"></option>
@@ -151,7 +151,7 @@
 
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Category</label>
-                    <select name="category_id" required :disabled="!branchId" class="w-full rounded-lg border-ink-200 shadow-sm text-sm disabled:bg-ink-50">
+                    <select name="category_id" required :disabled="!branchId" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm disabled:bg-ink-50">
                         <option value="" disabled selected>Select a category</option>
                         <template x-for="category in categoryOptions" :key="category.id">
                             <option :value="category.id" x-text="category.name"></option>
@@ -165,26 +165,26 @@
                 <div class="grid grid-cols-6 gap-3 items-end">
                     <div class="col-span-3">
                         <label class="block text-xs font-medium text-ink-500 mb-1">Item Name</label>
-                        <input type="text" name="name" required placeholder="e.g. Margherita Pizza" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="text" name="name" required placeholder="e.g. Margherita Pizza" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                     <div class="col-span-2">
                         <label class="block text-xs font-medium text-ink-500 mb-1">Price</label>
-                        <input type="number" step="0.01" name="price" required placeholder="249.00" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="number" step="0.01" name="price" required placeholder="249.00" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">GST %</label>
-                        <input type="number" step="0.01" name="gst_percentage" required placeholder="5" value="5" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="number" step="0.01" name="gst_percentage" required placeholder="5" value="5" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Image</label>
-                    <input type="file" name="image" accept="image/*" class="w-full text-sm rounded-lg border-ink-200 shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-ink-900 file:px-3 file:py-1.5 file:text-white file:text-xs">
+                    <input type="file" name="image" accept="image/*" class="w-full text-sm rounded-lg border-ink-200 px-3 py-2 shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-ink-900 file:px-3 file:py-1.5 file:text-white file:text-xs">
                 </div>
 
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Description</label>
-                    <textarea name="description" rows="2" placeholder="Short description shown to customers" class="w-full rounded-lg border-ink-200 shadow-sm text-sm"></textarea>
+                    <textarea name="description" rows="2" placeholder="Short description shown to customers" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm"></textarea>
                 </div>
 
                 <div>
@@ -474,7 +474,7 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-medium text-ink-500 mb-1">Category</label>
-                            <select name="category_id" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                            <select name="category_id" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                                 @foreach ($item->branch->categories as $category)
                                     <option value="{{ $category->id }}" {{ $item->category_id === $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                 @endforeach
@@ -482,18 +482,18 @@
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-ink-500 mb-1">Item Name</label>
-                            <input type="text" name="name" value="{{ $item->name }}" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                            <input type="text" name="name" value="{{ $item->name }}" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-medium text-ink-500 mb-1">Price</label>
-                            <input type="number" step="0.01" name="price" value="{{ $item->price }}" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                            <input type="number" step="0.01" name="price" value="{{ $item->price }}" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-ink-500 mb-1">GST %</label>
-                            <input type="number" step="0.01" name="gst_percentage" value="{{ $item->gst_percentage }}" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                            <input type="number" step="0.01" name="gst_percentage" value="{{ $item->gst_percentage }}" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         </div>
                     </div>
 
@@ -505,12 +505,12 @@
                                 <span class="text-xs text-ink-400">Current image — upload a new one to replace it</span>
                             </div>
                         @endif
-                        <input type="file" name="image" accept="image/*" class="w-full text-sm rounded-lg border-ink-200 shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-ink-900 file:px-3 file:py-1.5 file:text-white file:text-xs">
+                        <input type="file" name="image" accept="image/*" class="w-full text-sm rounded-lg border-ink-200 px-3 py-2 shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-ink-900 file:px-3 file:py-1.5 file:text-white file:text-xs">
                     </div>
 
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Description</label>
-                        <textarea name="description" rows="2" placeholder="Short description shown to customers" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">{{ $item->description }}</textarea>
+                        <textarea name="description" rows="2" placeholder="Short description shown to customers" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">{{ $item->description }}</textarea>
                     </div>
 
                     <div>
@@ -575,8 +575,8 @@
                     <div x-show="addVariationOpen" x-cloak class="mb-4 rounded-lg border border-ink-100 bg-ink-50/40 p-3">
                         <form method="POST" action="{{ route('admin.branches.menu-items.variations.store', [$item->branch->restaurant, $item->branch, $item]) }}" class="flex gap-2">
                             @csrf
-                            <input type="text" name="name" required placeholder="e.g. Half" class="flex-1 rounded-lg border-ink-200 shadow-sm text-sm">
-                            <input type="number" step="0.01" name="price" required placeholder="Price" class="w-28 rounded-lg border-ink-200 shadow-sm text-sm">
+                            <input type="text" name="name" required placeholder="e.g. Half" class="flex-1 rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
+                            <input type="number" step="0.01" name="price" required placeholder="Price" class="w-28 rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                             <button type="submit" class="rounded-lg bg-brand-600 px-3 py-2 text-white text-xs font-medium hover:bg-brand-700">Add</button>
                         </form>
                     </div>
@@ -596,8 +596,8 @@
                                         <td class="px-4 py-2" colspan="3" x-show="editingVariationId === {{ $variation->id }}" x-cloak>
                                             <form method="POST" action="{{ route('admin.branches.menu-items.variations.update', [$item->branch->restaurant, $item->branch, $item, $variation]) }}" class="flex items-center gap-2">
                                                 @csrf @method('PUT')
-                                                <input type="text" name="name" value="{{ $variation->name }}" required class="flex-1 rounded-lg border-ink-200 shadow-sm text-sm">
-                                                <input type="number" step="0.01" name="price" value="{{ $variation->price }}" required class="w-24 rounded-lg border-ink-200 shadow-sm text-sm">
+                                                <input type="text" name="name" value="{{ $variation->name }}" required class="flex-1 rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
+                                                <input type="number" step="0.01" name="price" value="{{ $variation->price }}" required class="w-24 rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                                                 <button type="submit" class="rounded-lg bg-brand-600 px-3 py-1.5 text-white text-xs font-medium hover:bg-brand-700">Save</button>
                                                 <button type="button" @click="editingVariationId = null" class="rounded-lg border border-ink-200 px-3 py-1.5 text-xs font-medium text-ink-600 hover:bg-ink-50">Cancel</button>
                                             </form>

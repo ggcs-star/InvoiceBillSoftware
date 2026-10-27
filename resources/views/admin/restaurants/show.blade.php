@@ -74,12 +74,12 @@
                     <h3 class="font-medium mb-4">Add Branch</h3>
                     <form method="POST" action="{{ route('admin.branches.store', $restaurant) }}" class="space-y-3">
                         @csrf
-                        <input type="text" name="name" required placeholder="e.g. branch1" class="block w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                        <input type="text" name="locality" placeholder="Area / Locality, e.g. Indiranagar" class="block w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                        <input type="text" name="address" placeholder="Address" class="block w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="text" name="name" required placeholder="e.g. branch1" class="block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
+                        <input type="text" name="locality" placeholder="Area / Locality, e.g. Naranpura" class="block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
+                        <input type="text" name="address" placeholder="Address" class="block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         <div class="grid grid-cols-2 gap-3">
-                            <input type="text" name="phone" placeholder="Phone" class="block w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                            <input type="text" name="gstin" placeholder="GSTIN" class="block w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                            <input type="text" name="phone" placeholder="Phone" class="block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
+                            <input type="text" name="gstin" placeholder="GSTIN" class="block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         </div>
                         <button type="submit" class="w-full rounded-lg bg-ink-900 px-4 py-2 text-white text-sm font-medium hover:bg-ink-700">+ Add Branch</button>
                     </form>

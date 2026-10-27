@@ -53,7 +53,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Restaurant</label>
-                        <select x-model="restaurantId" @change="branchId = ''" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <select x-model="restaurantId" @change="branchId = ''" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                             <option value="" disabled>Select a restaurant</option>
                             @foreach ($restaurants as $restaurant)
                                 <option value="{{ $restaurant->id }}">{{ $restaurant->name }}</option>
@@ -62,7 +62,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Branch</label>
-                        <select x-model="branchId" required :disabled="!restaurantId" class="w-full rounded-lg border-ink-200 shadow-sm text-sm disabled:bg-ink-50">
+                        <select x-model="branchId" required :disabled="!restaurantId" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm disabled:bg-ink-50">
                             <option value="" disabled>Select a branch</option>
                             <template x-for="branch in branchOptions" :key="branch.id">
                                 <option :value="branch.id" x-text="branch.name"></option>
@@ -72,11 +72,11 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Name</label>
-                    <input type="text" name="name" required placeholder="e.g. Counter Printer" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <input type="text" name="name" required placeholder="e.g. Counter Printer" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Connection Type</label>
-                    <select name="connection_type" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <select name="connection_type" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         @foreach ($connectionTypes as $type)
                             <option value="{{ $type->value }}">{{ $type->label() }}</option>
                         @endforeach
@@ -86,11 +86,11 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">IP Address</label>
-                        <input type="text" name="ip_address" placeholder="192.168.1.50" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="text" name="ip_address" placeholder="192.168.1.50" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Port</label>
-                        <input type="number" name="port" placeholder="9100" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="number" name="port" placeholder="9100" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                 </div>
                 <label class="flex items-center gap-2 text-sm text-ink-700">
@@ -122,11 +122,11 @@
                 @csrf @method('PUT')
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Name</label>
-                    <input type="text" name="name" x-model="editing.name" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <input type="text" name="name" x-model="editing.name" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Connection Type</label>
-                    <select name="connection_type" x-model="editing.connection_type" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <select name="connection_type" x-model="editing.connection_type" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         @foreach ($connectionTypes as $type)
                             <option value="{{ $type->value }}">{{ $type->label() }}</option>
                         @endforeach
@@ -135,11 +135,11 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">IP Address</label>
-                        <input type="text" name="ip_address" x-model="editing.ip_address" placeholder="192.168.1.50" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="text" name="ip_address" x-model="editing.ip_address" placeholder="192.168.1.50" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Port</label>
-                        <input type="number" name="port" x-model="editing.port" placeholder="9100" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="number" name="port" x-model="editing.port" placeholder="9100" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                 </div>
                 <label class="flex items-center gap-2 text-sm text-ink-700">

@@ -73,26 +73,26 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-ink-500 mb-1">Item Name</label>
-                                <input type="text" name="name" required placeholder="e.g. Margherita Pizza" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                                <input type="text" name="name" required placeholder="e.g. Margherita Pizza" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-ink-500 mb-1">Price</label>
-                                <input type="number" step="0.01" name="price" required placeholder="249.00" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                                <input type="number" step="0.01" name="price" required placeholder="249.00" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium text-ink-500 mb-1">GST %</label>
-                                <input type="number" step="0.01" name="gst_percentage" required placeholder="5" value="5" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                                <input type="number" step="0.01" name="gst_percentage" required placeholder="5" value="5" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                             </div>
                         </div>
 
                         <div>
                             <label class="block text-xs font-medium text-ink-500 mb-1">Image</label>
-                            <input type="file" name="image" accept="image/*" class="w-full text-sm rounded-lg border-ink-200 shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-ink-900 file:px-3 file:py-1.5 file:text-white file:text-xs">
+                            <input type="file" name="image" accept="image/*" class="w-full text-sm rounded-lg border-ink-200 px-3 py-2 shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-ink-900 file:px-3 file:py-1.5 file:text-white file:text-xs">
                         </div>
 
                         <div>
                             <label class="block text-xs font-medium text-ink-500 mb-1">Description</label>
-                            <textarea name="description" rows="2" placeholder="Short description shown to customers" class="w-full rounded-lg border-ink-200 shadow-sm text-sm"></textarea>
+                            <textarea name="description" rows="2" placeholder="Short description shown to customers" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm"></textarea>
                         </div>
 
                         <div>
@@ -151,15 +151,15 @@
                                 <form method="POST" action="{{ route('admin.branches.menu-items.update', [$restaurant, $branch, $item]) }}" enctype="multipart/form-data" class="space-y-3">
                                     @csrf @method('PUT')
                                     <div class="grid grid-cols-6 gap-3 items-end">
-                                        <select name="category_id" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                                        <select name="category_id" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}" {{ $item->category_id === $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
-                                        <input type="text" name="name" value="{{ $item->name }}" required class="col-span-2 w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                                        <input type="number" step="0.01" name="price" value="{{ $item->price }}" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                                        <input type="number" step="0.01" name="gst_percentage" value="{{ $item->gst_percentage }}" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
-                                        <input type="file" name="image" accept="image/*" class="w-full text-xs rounded-lg border-ink-200 shadow-sm file:mr-2 file:rounded-lg file:border-0 file:bg-ink-900 file:px-2 file:py-1.5 file:text-white file:text-xs">
+                                        <input type="text" name="name" value="{{ $item->name }}" required class="col-span-2 w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
+                                        <input type="number" step="0.01" name="price" value="{{ $item->price }}" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
+                                        <input type="number" step="0.01" name="gst_percentage" value="{{ $item->gst_percentage }}" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
+                                        <input type="file" name="image" accept="image/*" class="w-full text-xs rounded-lg border-ink-200 px-3 py-2 shadow-sm file:mr-2 file:rounded-lg file:border-0 file:bg-ink-900 file:px-2 file:py-1.5 file:text-white file:text-xs">
                                     </div>
                                     <div class="flex flex-wrap items-center gap-4">
                                         <div class="flex gap-2">
@@ -291,8 +291,8 @@
 
                                 <form method="POST" action="{{ route('admin.branches.menu-items.variations.store', [$restaurant, $branch, $item]) }}" class="flex gap-2 max-w-md">
                                     @csrf
-                                    <input type="text" name="name" required placeholder="e.g. Half" class="flex-1 rounded-lg border-ink-200 shadow-sm text-sm">
-                                    <input type="number" step="0.01" name="price" required placeholder="Price" class="w-28 rounded-lg border-ink-200 shadow-sm text-sm">
+                                    <input type="text" name="name" required placeholder="e.g. Half" class="flex-1 rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
+                                    <input type="number" step="0.01" name="price" required placeholder="Price" class="w-28 rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                                     <button type="submit" class="rounded-lg bg-brand-600 px-3 py-2 text-white text-xs font-medium hover:bg-brand-700">+ Add</button>
                                 </form>
                             </td>

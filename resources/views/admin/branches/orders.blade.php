@@ -28,11 +28,11 @@
             <div class="grid grid-cols-2 gap-2">
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">From</label>
-                    <input type="date" name="from" value="{{ request('from') }}" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <input type="date" name="from" value="{{ request('from') }}" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">To</label>
-                    <input type="date" name="to" value="{{ request('to') }}" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <input type="date" name="to" value="{{ request('to') }}" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                 </div>
             </div>
             <div class="sm:col-span-4 flex gap-2">

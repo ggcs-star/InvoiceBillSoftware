@@ -15,6 +15,36 @@ use Illuminate\View\View;
 
 class StaffController extends Controller
 {
+    /**
+     * Platform-wide staff directory across every restaurant and branch.
+     */
+    public function all(Request $request): View
+    {
+        $this->authorize('viewAny', User::class);
+
+        $staff = User::with('branch.restaurant')
+            ->where('role', UserRole::User)
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->string('search');
+                $query->where(fn ($q) => $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%"));
+            })
+            ->when($request->filled('restaurant_id'), fn ($query) => $query->whereHas(
+                'branch',
+                fn ($branchQuery) => $branchQuery->where('restaurant_id', $request->integer('restaurant_id'))
+            ))
+            ->when($request->filled('branch_id'), fn ($query) => $query->where('branch_id', $request->integer('branch_id')))
+            ->when($request->filled('status'), fn ($query) => $query->where('is_active', $request->input('status') === 'active'))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        $restaurants = Restaurant::orderBy('name')->get(['id', 'name']);
+        $branches = Branch::with('restaurant')->orderBy('name')->get(['id', 'name', 'restaurant_id']);
+
+        return view('admin.staff.all', compact('staff', 'restaurants', 'branches'));
+    }
+
     public function index(Request $request, Restaurant $restaurant, Branch $branch): View
     {
         $this->authorize('viewAny', User::class);

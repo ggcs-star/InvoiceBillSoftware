@@ -38,24 +38,24 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Branch Name</label>
-                    <input type="text" name="name" required placeholder="e.g. MG Road" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <input type="text" name="name" required placeholder="e.g. CG Road" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Area / Locality</label>
-                    <input type="text" name="locality" placeholder="e.g. Indiranagar" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <input type="text" name="locality" placeholder="e.g. Naranpura" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-500 mb-1">Address</label>
-                    <input type="text" name="address" placeholder="Address" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                    <input type="text" name="address" placeholder="Address" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Phone</label>
-                        <input type="text" name="phone" placeholder="Phone" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="text" name="phone" placeholder="Phone" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">GSTIN</label>
-                        <input type="text" name="gstin" placeholder="GSTIN" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="text" name="gstin" placeholder="GSTIN" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 pt-2">

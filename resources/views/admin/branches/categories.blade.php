@@ -38,7 +38,7 @@
                     @csrf
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Category Name</label>
-                        <input type="text" name="name" required placeholder="e.g. Pizzas" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <input type="text" name="name" required placeholder="e.g. Pizzas" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                     <div class="flex justify-end gap-2 pt-2">
                         <button type="button" @click="open = false" class="rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-600 hover:bg-ink-50">Cancel</button>

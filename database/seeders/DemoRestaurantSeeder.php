@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * A ready-to-bill demo brand with two branches so the whole flow (branch ->
+ * A ready-to-bill demo brand with four branches so the whole flow (branch ->
  * areas -> categories -> menu -> cart -> checkout -> invoice -> print) can be
  * exercised immediately after a fresh install. Prices differ per branch to
  * demonstrate that menu pricing is set independently at each location.
@@ -21,30 +21,50 @@ class DemoRestaurantSeeder extends Seeder
     public function run(): void
     {
         $restaurant = Restaurant::updateOrCreate(
-            ['slug' => 'spice-garden'],
-            ['name' => 'Jagods Cloud Kitchen', 'is_active' => true]
+            ['slug' => 'jagdai-cloud-kitchen'],
+            ['name' => 'Jagdai Cloud Kitchen', 'cuisine_type' => 'Indian / Multi-Cuisine', 'is_active' => true]
         );
 
         $branches = [
             [
-                'slug' => 'mg-road',
-                'name' => 'MG Road',
-                'address' => '12 MG Road, Bengaluru',
+                'slug' => 'cg-road',
+                'name' => 'CG Road',
+                'address' => '1st Floor, CG Road, Navrangpura, Ahmedabad',
                 'phone' => '+91 98765 43210',
-                'gstin' => '29ABCDE1234F1Z5',
+                'gstin' => '24ABCDE1234F1Z1',
                 'printer_ip' => '192.168.1.50',
                 'price_multiplier' => 1.0,
                 'cashier_email' => 'cashier@example.com',
             ],
             [
-                'slug' => 'indiranagar',
-                'name' => 'Indiranagar',
-                'address' => '100 Ft Road, Indiranagar, Bengaluru',
+                'slug' => 'motera',
+                'name' => 'Motera',
+                'address' => 'Near Stadium Road, Motera, Ahmedabad',
                 'phone' => '+91 98765 11223',
-                'gstin' => '29ABCDE1234F1Z6',
+                'gstin' => '24ABCDE1234F1Z2',
                 'printer_ip' => '192.168.1.60',
+                'price_multiplier' => 1.05,
+                'cashier_email' => 'cashier.motera@example.com',
+            ],
+            [
+                'slug' => 'naranpura',
+                'name' => 'Naranpura',
+                'address' => 'Jawahar Chowk, Naranpura, Ahmedabad',
+                'phone' => '+91 98765 33445',
+                'gstin' => '24ABCDE1234F1Z3',
+                'printer_ip' => '192.168.1.70',
+                'price_multiplier' => 0.95,
+                'cashier_email' => 'cashier.naranpura@example.com',
+            ],
+            [
+                'slug' => 'gandhinagar',
+                'name' => 'Gandhinagar',
+                'address' => 'Sector 11, Gandhinagar',
+                'phone' => '+91 98765 55667',
+                'gstin' => '24ABCDE1234F1Z4',
+                'printer_ip' => '192.168.1.80',
                 'price_multiplier' => 1.1,
-                'cashier_email' => 'cashier.indiranagar@example.com',
+                'cashier_email' => 'cashier.gandhinagar@example.com',
             ],
         ];
 

@@ -18,7 +18,7 @@ class DemoOrdersSeeder extends Seeder
 {
     public function run(): void
     {
-        $branches = Branch::whereHas('restaurant', fn ($query) => $query->where('slug', 'spice-garden'))
+        $branches = Branch::whereHas('restaurant', fn ($query) => $query->where('slug', 'jagdai-cloud-kitchen'))
             ->with('staff', 'menuItems')
             ->get();
 

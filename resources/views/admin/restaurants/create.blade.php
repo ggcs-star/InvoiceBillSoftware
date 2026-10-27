@@ -19,8 +19,8 @@
             <div>
                 <label class="block text-sm font-medium text-ink-700">Restaurant / Brand Name</label>
                 <input type="text" name="name" value="{{ old('name') }}" required autofocus
-                       placeholder="e.g. Jagods Cloud Kitchen"
-                       class="mt-1 block w-full rounded-lg border-ink-200 shadow-sm">
+                       placeholder="e.g. Jagdai Cloud Kitchen"
+                       class="mt-1 block w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm">
                 <p class="text-xs text-ink-500 mt-1">This is the brand. You'll add individual branches (locations) next, each with its own address, printer, and menu pricing.</p>
             </div>
 

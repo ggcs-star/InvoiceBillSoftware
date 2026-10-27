@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::get('menu-items/bulk-import/sample', [MenuItemImportController::class, 'sample'])->name('menu-items.bulk-import.sample');
         Route::get('orders', [AdminOrderController::class, 'all'])->name('orders.index');
         Route::get('printers', [PrinterController::class, 'all'])->name('printers.index');
+        Route::get('staff', [StaffController::class, 'all'])->name('staff.index');
 
         Route::prefix('restaurants/{restaurant}/branches')->name('branches.')->group(function () {
             Route::post('/', [BranchController::class, 'store'])->name('store');

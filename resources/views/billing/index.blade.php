@@ -127,12 +127,12 @@
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Customer Name (optional)</label>
                         <input type="text" x-model="customerName" @blur="saveCustomer()" placeholder="Walk-in"
-                               class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                               class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Phone (optional)</label>
                         <input type="text" x-model="customerPhone" @blur="saveCustomer()" placeholder="98765 43210"
-                               class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                               class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                     </div>
                 </div>
 
@@ -192,7 +192,7 @@
 
                         <div class="mt-4">
                             <label class="block text-xs font-medium text-ink-500 mb-1">Payment Method</label>
-                            <select x-model="paymentMethod" class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                            <select x-model="paymentMethod" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                                 <option value="cash">Cash</option>
                                 <option value="upi">UPI</option>
                                 <option value="card">Card</option>
@@ -203,17 +203,17 @@
                         <div class="mt-3" x-show="paymentMethod === 'upi'">
                             <label class="block text-xs font-medium text-ink-500 mb-1">UPI ID</label>
                             <input type="text" x-model="transactionReference" placeholder="name@bank"
-                                   class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                                   class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         </div>
                         <div class="mt-3" x-show="paymentMethod === 'card'">
                             <label class="block text-xs font-medium text-ink-500 mb-1">Card Details (last 4 digits / ref. no.)</label>
                             <input type="text" x-model="transactionReference" placeholder="•••• 4242"
-                                   class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                                   class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         </div>
                         <div class="mt-3" x-show="paymentMethod === 'other'">
                             <label class="block text-xs font-medium text-ink-500 mb-1">Reference (optional)</label>
                             <input type="text" x-model="transactionReference" placeholder="Reference number"
-                                   class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                                   class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                         </div>
 
                         <button @click="checkout()" :disabled="loading || !order.items.length"

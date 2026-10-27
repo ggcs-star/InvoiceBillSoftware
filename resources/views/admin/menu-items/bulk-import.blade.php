@@ -18,7 +18,7 @@
             <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
             Back to Menu Items
         </a>
-        <a href="{{ route('admin.menu-items.bulk-import.sample') }}" class="rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-600 hover:bg-ink-50">
+        <a href="{{ route('admin.menu-items.bulk-import.sample') }}" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
             Download Sample File
         </a>
     </div>
@@ -97,7 +97,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Restaurant</label>
-                        <select x-model="restaurantId" @change="branchId = ''" required class="w-full rounded-lg border-ink-200 shadow-sm text-sm">
+                        <select x-model="restaurantId" @change="branchId = ''" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
                             <option value="" disabled>Select a restaurant</option>
                             @foreach ($restaurants as $restaurant)
                                 <option value="{{ $restaurant->id }}">{{ $restaurant->name }}</option>
@@ -106,7 +106,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Branch</label>
-                        <select name="branch_id" x-model="branchId" required :disabled="!restaurantId" class="w-full rounded-lg border-ink-200 shadow-sm text-sm disabled:bg-ink-50">
+                        <select name="branch_id" x-model="branchId" required :disabled="!restaurantId" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm disabled:bg-ink-50">
                             <option value="" disabled>Select a branch</option>
                             <template x-for="branch in branchOptions" :key="branch.id">
                                 <option :value="branch.id" x-text="branch.name"></option>

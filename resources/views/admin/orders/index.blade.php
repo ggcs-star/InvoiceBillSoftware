@@ -37,11 +37,11 @@
             </div>
             <div>
                 <label class="block text-xs font-medium text-ink-500 mb-1">From</label>
-                <input type="date" name="from" value="{{ request('from') }}" class="rounded-lg border-ink-200 shadow-sm text-sm">
+                <input type="date" name="from" value="{{ request('from') }}" class="rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
             </div>
             <div>
                 <label class="block text-xs font-medium text-ink-500 mb-1">To</label>
-                <input type="date" name="to" value="{{ request('to') }}" class="rounded-lg border-ink-200 shadow-sm text-sm">
+                <input type="date" name="to" value="{{ request('to') }}" class="rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
             </div>
             <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-white text-sm font-medium hover:bg-brand-700">Filter</button>
             @if (request()->anyFilled(['search', 'restaurant_id', 'branch_id', 'status', 'from', 'to']))

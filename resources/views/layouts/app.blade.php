@@ -99,6 +99,16 @@
                             </svg>
                             Orders
                         </a>
+                        <a href="{{ route('admin.staff.index') }}"
+                           class="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition {{ request()->routeIs('admin.staff.index') ? 'bg-brand-500 text-white shadow-sm shadow-brand-500/30' : 'text-ink-500 hover:bg-brand-50 hover:text-brand-600' }}">
+                            <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="9" cy="8" r="3.2"/>
+                                <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+                                <path d="M15.5 8.5a3 3 0 1 0 0-5.8"/>
+                                <path d="M16 14.3c2.3.6 4 2.7 4 5.2"/>
+                            </svg>
+                            Staff
+                        </a>
 
                         {{--
                             Scale note: the sidebar only ever renders the ONE restaurant you're
