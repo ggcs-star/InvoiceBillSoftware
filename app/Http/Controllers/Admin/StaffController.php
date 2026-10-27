@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\UserRole;
+use App\Http\Controllers\Concerns\AuthorizesBranchAccess;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StaffRequest;
 use App\Models\Branch;
@@ -15,6 +16,8 @@ use Illuminate\View\View;
 
 class StaffController extends Controller
 {
+    use AuthorizesBranchAccess;
+
     /**
      * Platform-wide staff directory across every restaurant and branch.
      */
@@ -47,7 +50,7 @@ class StaffController extends Controller
 
     public function index(Request $request, Restaurant $restaurant, Branch $branch): View
     {
-        $this->authorize('viewAny', User::class);
+        $this->authorizeBranch($request, $branch);
 
         $staff = $branch->staff()
             ->when($request->filled('search'), function ($query) use ($request) {
@@ -64,7 +67,7 @@ class StaffController extends Controller
 
     public function store(StaffRequest $request, Restaurant $restaurant, Branch $branch): RedirectResponse
     {
-        $this->authorize('create', User::class);
+        $this->authorizeBranch($request, $branch);
 
         $branch->staff()->create([
             ...$request->validated(),

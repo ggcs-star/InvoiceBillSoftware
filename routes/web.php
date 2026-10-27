@@ -50,13 +50,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/{branch}/edit', [BranchController::class, 'edit'])->name('edit');
             Route::put('/{branch}', [BranchController::class, 'update'])->name('update');
             Route::delete('/{branch}', [BranchController::class, 'destroy'])->name('destroy');
-
-            Route::prefix('/{branch}')->group(function () {
-                Route::get('staff', [StaffController::class, 'index'])->name('staff.index');
-                Route::post('staff', [StaffController::class, 'store'])->name('staff.store');
-                Route::put('staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
-                Route::delete('staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
-            });
         });
     });
 
@@ -88,6 +81,11 @@ Route::middleware('auth')->group(function () {
             Route::put('printers/{printer}', [PrinterController::class, 'update'])->name('printers.update');
             Route::patch('printers/{printer}/approve', [PrinterController::class, 'approve'])->name('printers.approve');
             Route::delete('printers/{printer}', [PrinterController::class, 'destroy'])->name('printers.destroy');
+
+            Route::get('staff', [StaffController::class, 'index'])->name('staff.index');
+            Route::post('staff', [StaffController::class, 'store'])->name('staff.store');
+            Route::put('staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
+            Route::delete('staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
         });
     });
 

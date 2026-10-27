@@ -70,8 +70,20 @@ class DemoRestaurantSeeder extends Seeder
 
         $menu = [
             'Pizzas' => [
-                ['name' => 'Margherita Pizza', 'price' => 249.00, 'gst' => 5],
-                ['name' => 'Farmhouse Pizza', 'price' => 329.00, 'gst' => 5],
+                [
+                    'name' => 'Margherita Pizza', 'price' => 249.00, 'gst' => 5,
+                    'variations' => [
+                        ['name' => 'Half', 'price' => 149.00],
+                        ['name' => 'Full', 'price' => 249.00],
+                    ],
+                ],
+                [
+                    'name' => 'Farmhouse Pizza', 'price' => 329.00, 'gst' => 5,
+                    'variations' => [
+                        ['name' => 'Half', 'price' => 199.00],
+                        ['name' => 'Full', 'price' => 329.00],
+                    ],
+                ],
             ],
             'Cold Drinks' => [
                 ['name' => 'Cold Drink (330ml)', 'price' => 60.00, 'gst' => 12],
@@ -113,7 +125,7 @@ class DemoRestaurantSeeder extends Seeder
                 );
 
                 foreach ($items as $item) {
-                    $branch->menuItems()->updateOrCreate(
+                    $menuItem = $branch->menuItems()->updateOrCreate(
                         ['slug' => Str::slug($item['name'])],
                         [
                             'category_id' => $category->id,
@@ -123,6 +135,17 @@ class DemoRestaurantSeeder extends Seeder
                             'is_available' => true,
                         ]
                     );
+
+                    foreach ($item['variations'] ?? [] as $sortOrder => $variation) {
+                        $menuItem->variations()->updateOrCreate(
+                            ['name' => $variation['name']],
+                            [
+                                'price' => round($variation['price'] * $branchData['price_multiplier'], 2),
+                                'sort_order' => $sortOrder,
+                                'is_active' => true,
+                            ]
+                        );
+                    }
                 }
             }
 

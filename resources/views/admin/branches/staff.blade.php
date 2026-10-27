@@ -14,7 +14,7 @@
 
     @include('admin.branches._nav')
 
-    <div x-data="{ addOpen: false, openEditFor: null }" class="space-y-4">
+    <div x-data="{ addOpen: false, openViewFor: null, openEditFor: null }" class="space-y-4">
         <div class="flex justify-end">
             <button type="button" @click="addOpen = true" class="rounded-lg bg-brand-600 px-4 py-2 text-white text-sm font-medium hover:bg-brand-700">
                 + Add Staff Account
@@ -118,6 +118,13 @@
                             </td>
                             <td class="px-5 py-3 text-right">
                                 <div class="inline-flex gap-2">
+                                    <button type="button" title="View" @click="openViewFor = {{ $member->id }}"
+                                            class="flex h-7 w-7 items-center justify-center rounded-lg border border-ink-200 text-ink-500 hover:bg-ink-50">
+                                        <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/>
+                                            <circle cx="12" cy="12" r="3"/>
+                                        </svg>
+                                    </button>
                                     <button type="button" title="Edit" @click="openEditFor = {{ $member->id }}"
                                             class="flex h-7 w-7 items-center justify-center rounded-lg border border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100">
                                         <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -145,6 +152,51 @@
         </div>
 
         <x-pagination :paginator="$staff" />
+
+        {{-- View modals (one per staff member) --}}
+        @foreach ($staff as $member)
+            <div x-show="openViewFor === {{ $member->id }}" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4">
+                <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden" @click.outside="openViewFor = null">
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+                        <h3 class="text-lg font-bold text-ink-900">Staff Details</h3>
+                        <button type="button" @click="openViewFor = null" class="text-ink-400 hover:text-ink-700">
+                            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-600">
+                                {{ Str::of($member->name)->explode(' ')->map(fn ($p) => Str::substr($p, 0, 1))->take(2)->implode('') }}
+                            </span>
+                            <div class="min-w-0">
+                                <div class="text-base font-bold text-ink-900 truncate">{{ $member->name }}</div>
+                                <div class="text-xs font-medium {{ $member->is_active ? 'text-green-600' : 'text-ink-400' }}">{{ $member->is_active ? 'Active' : 'Inactive' }}</div>
+                            </div>
+                        </div>
+                        <dl class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                            <div class="col-span-2">
+                                <dt class="text-xs text-ink-400">Email</dt>
+                                <dd class="font-medium text-ink-900 truncate">{{ $member->email }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-ink-400">Restaurant</dt>
+                                <dd class="font-medium text-ink-900">{{ $restaurant->name }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-ink-400">Branch</dt>
+                                <dd class="font-medium text-ink-900">{{ $branch->name }}</dd>
+                            </div>
+                        </dl>
+                        <div class="flex justify-end pt-2">
+                            <button type="button" @click="openViewFor = null" class="rounded-lg border border-ink-200 px-4 py-2 text-sm font-medium text-ink-600 hover:bg-ink-50">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
 
         {{-- Edit modals (one per staff member) --}}
         @foreach ($staff as $member)

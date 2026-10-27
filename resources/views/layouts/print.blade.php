@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Receipt')</title>
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo_jagdai.jpeg') }}">
     @vite(['resources/css/app.css'])
     <style>
         @media print {
