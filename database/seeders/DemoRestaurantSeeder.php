@@ -22,7 +22,7 @@ class DemoRestaurantSeeder extends Seeder
     {
         $restaurant = Restaurant::updateOrCreate(
             ['slug' => 'jagdai-cloud-kitchen'],
-            ['name' => 'Jagdai Cloud Kitchen', 'cuisine_type' => 'Indian / Multi-Cuisine', 'is_active' => true]
+            ['name' => 'Jagdai Food', 'cuisine_type' => 'Indian / Multi-Cuisine', 'is_active' => true]
         );
 
         $branches = [

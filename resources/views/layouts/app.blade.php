@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="api-token" content="{{ session('api_token') }}">
-    <title>@yield('title', 'Jagdai Cloud Kitchen')</title>
+    <title>@yield('title', 'Jagdai Food')</title>
     <link rel="icon" type="image/jpeg" href="{{ asset('images/logo_jagdai.jpeg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -20,11 +20,12 @@
                class="fixed inset-y-0 left-0 z-40 w-64 shrink-0 overflow-hidden bg-brand-50 border-r border-ink-100 flex flex-col transform transition-transform duration-200 ease-in-out lg:static lg:translate-x-0">
             <div class="flex items-center gap-3 px-6 py-5">
                 <span class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
-                    <img src="{{ asset('images/logo_jagdai.jpeg') }}" alt="Jagdai Cloud Kitchen" class="h-12 w-12 object-contain">
+                    <img src="{{ asset('images/logo_jagdai.jpeg') }}" alt="Jagdai Food" class="h-12 w-12 object-contain">
                 </span>
                 <div class="leading-tight flex-1 min-w-0">
-                    <div class="text-base font-bold tracking-tight text-ink-900">Jagdai Cloud</div>
-                    <div class="-mt-0.5 text-base font-bold tracking-tight text-brand-500">Kitchen</div>
+                    <div class="text-base font-bold tracking-tight">
+                        <span class="text-ink-900">Jagdai</span> <span class="text-brand-500">Food</span>
+                    </div>
                 </div>
                 <button type="button" @click="sidebarOpen = false" class="shrink-0 rounded-lg p-1.5 text-ink-400 hover:bg-ink-100 hover:text-ink-700 lg:hidden">
                     <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -343,7 +344,7 @@
                                 <line x1="3" y1="18" x2="21" y2="18"/>
                             </svg>
                         </button>
-                        <h1 class="text-xl font-semibold text-ink-900 truncate">@yield('header', 'Jagdai Cloud Kitchen')</h1>
+                        <h1 class="text-xl font-semibold text-ink-900 truncate">@yield('header', 'Jagdai Food')</h1>
                     </div>
 
                     <div class="flex items-center gap-4">

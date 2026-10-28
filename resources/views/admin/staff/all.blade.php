@@ -50,8 +50,6 @@
      }">
     <div class="flex items-start justify-between gap-4 mb-6">
         <div>
-            <h1 class="text-2xl font-bold text-ink-900">Staff</h1>
-            <p class="mt-1 text-sm text-ink-500">Every branch staff account across all restaurants, in one place.</p>
         </div>
         <button type="button" @click="addOpen = true" class="shrink-0 rounded-lg bg-brand-600 px-4 py-2 text-white text-sm font-medium hover:bg-brand-700">
             + Add Staff
