@@ -111,6 +111,50 @@ class MenuItemController extends Controller
         ]);
     }
 
+    /**
+     * Same export as export(), scoped to a single branch for that branch's
+     * own staff login.
+     */
+    public function exportForBranch(Request $request, Restaurant $restaurant, Branch $branch): StreamedResponse
+    {
+        $this->authorizeBranch($request, $branch);
+
+        $menuItems = $branch->menuItems()
+            ->with(['category'])
+            ->when($request->filled('search'), fn ($query) => $query->where('name', 'like', '%' . $request->string('search') . '%'))
+            ->when($request->filled('category_id'), fn ($query) => $query->where('category_id', $request->integer('category_id')))
+            ->when($request->filled('availability'), fn ($query) => $query->where('is_available', $request->input('availability') === 'available'))
+            ->orderBy('name')
+            ->get();
+
+        $filename = 'menu-items-' . $branch->slug . '-' . now()->format('Y-m-d-His') . '.csv';
+
+        return new StreamedResponse(function () use ($menuItems, $branch) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['item_name', 'category_name', 'restaurant', 'branch', 'price', 'gst_percentage', 'description', 'type', 'is_available', 'show_on_customer_site']);
+
+            foreach ($menuItems as $item) {
+                fputcsv($handle, [
+                    $item->name,
+                    $item->category->name,
+                    $branch->restaurant->name,
+                    $branch->name,
+                    $item->price,
+                    $item->gst_percentage,
+                    $item->description,
+                    $item->food_type->value,
+                    $item->is_available ? 'yes' : 'no',
+                    $item->show_on_customer_site ? 'yes' : 'no',
+                ]);
+            }
+
+            fclose($handle);
+        }, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    }
+
     public function index(Request $request, Restaurant $restaurant, Branch $branch): View
     {
         $this->authorizeBranch($request, $branch);

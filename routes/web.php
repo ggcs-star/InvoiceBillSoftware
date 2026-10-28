@@ -64,6 +64,10 @@ Route::middleware('auth')->group(function () {
             Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
             Route::get('menu-items', [MenuItemController::class, 'index'])->name('menu-items.index');
+            Route::get('menu-items-export', [MenuItemController::class, 'exportForBranch'])->name('menu-items.export');
+            Route::get('menu-items/bulk-import', [MenuItemImportController::class, 'createForBranch'])->name('menu-items.bulk-import');
+            Route::post('menu-items/bulk-import', [MenuItemImportController::class, 'storeForBranch'])->name('menu-items.bulk-import.store');
+            Route::get('menu-items/bulk-import/sample', [MenuItemImportController::class, 'sample'])->name('menu-items.bulk-import.sample');
             Route::post('menu-items', [MenuItemController::class, 'store'])->name('menu-items.store');
             Route::put('menu-items/{menuItem}', [MenuItemController::class, 'update'])->name('menu-items.update');
             Route::patch('menu-items/{menuItem}/toggle', [MenuItemController::class, 'toggleAvailability'])->name('menu-items.toggle');

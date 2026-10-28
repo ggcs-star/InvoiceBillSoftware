@@ -22,6 +22,25 @@
             editingVariationId: null,
             addVariationOpen: false,
          }" class="space-y-4">
+        <div class="flex flex-wrap justify-end gap-2">
+            <a href="{{ route('admin.branches.menu-items.export', [$restaurant, $branch] + request()->query()) }}" class="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
+                <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 16V4"/>
+                    <path d="M7 11l5 5 5-5"/>
+                    <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+                </svg>
+                Export Menu Items
+            </a>
+            <a href="{{ route('admin.branches.menu-items.bulk-import', [$restaurant, $branch]) }}" class="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
+                <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 4v12"/>
+                    <path d="M7 9l5-5 5 5"/>
+                    <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+                </svg>
+                Bulk Upload
+            </a>
+        </div>
+
         <div class="bg-white rounded-2xl border border-ink-100 shadow-card p-4">
             <form method="GET" class="flex flex-wrap gap-3 items-end">
                 <div class="flex-1 min-w-[180px]">

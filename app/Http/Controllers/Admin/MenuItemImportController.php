@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\FoodType;
 use App\Helpers\SlugGenerator;
+use App\Http\Controllers\Concerns\AuthorizesBranchAccess;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\MenuItem;
 use App\Models\Restaurant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -17,6 +19,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class MenuItemImportController extends Controller
 {
+    use AuthorizesBranchAccess;
+
     private const REQUIRED_COLUMNS = ['item_name', 'category_name', 'price'];
 
     public function create(): View
@@ -59,7 +63,55 @@ class MenuItemImportController extends Controller
             ->where('restaurant_id', $request->integer('restaurant_id'))
             ->firstOrFail();
 
-        $rows = $this->readCsv($request->file('file'));
+        $result = $this->processImport($request->file('file'), $branch);
+
+        if ($result instanceof RedirectResponse) {
+            return $result;
+        }
+
+        return redirect()->route('admin.menu-items.bulk-import')
+            ->with('status', "Import complete — {$result['created']} item(s) added, {$result['updated']} updated.");
+    }
+
+    /**
+     * Branch-scoped bulk import for that branch's own staff login — the
+     * branch comes from the route, not a form picker.
+     */
+    public function createForBranch(Request $request, Restaurant $restaurant, Branch $branch): View
+    {
+        $this->authorizeBranch($request, $branch);
+
+        return view('admin.branches.menu-items-bulk-import', compact('restaurant', 'branch'));
+    }
+
+    public function storeForBranch(Request $request, Restaurant $restaurant, Branch $branch): RedirectResponse
+    {
+        $this->authorizeBranch($request, $branch);
+
+        $request->validate([
+            'file' => ['required', 'file', 'mimes:csv,txt', 'max:5120'],
+        ]);
+
+        $result = $this->processImport($request->file('file'), $branch);
+
+        if ($result instanceof RedirectResponse) {
+            return $result;
+        }
+
+        return redirect()->route('admin.branches.menu-items.bulk-import', [$restaurant, $branch])
+            ->with('status', "Import complete — {$result['created']} item(s) added, {$result['updated']} updated.");
+    }
+
+    /**
+     * Parses and imports the CSV into the given branch. Returns either the
+     * created/updated counts, or a RedirectResponse back with validation
+     * errors for the caller to return as-is.
+     *
+     * @return array{created: int, updated: int}|RedirectResponse
+     */
+    private function processImport(UploadedFile $file, Branch $branch): array|RedirectResponse
+    {
+        $rows = $this->readCsv($file);
 
         if ($rows === null) {
             return back()->withErrors(['file' => 'Could not read that file — make sure it is a valid CSV.']);
@@ -129,8 +181,7 @@ class MenuItemImportController extends Controller
             return [$created, $updated];
         });
 
-        return redirect()->route('admin.menu-items.bulk-import')
-            ->with('status', "Import complete — {$created} item(s) added, {$updated} updated.");
+        return ['created' => $created, 'updated' => $updated];
     }
 
     /**
