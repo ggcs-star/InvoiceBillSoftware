@@ -88,6 +88,7 @@
                 <h3 class="font-medium text-ink-900">Categories</h3>
                 <a href="{{ route('admin.branches.categories.index', [$restaurant, $branch]) }}" class="text-sm font-medium text-brand-600 hover:underline">Manage Categories &rarr;</a>
             </div>
+            <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead class="text-left text-ink-500 border-b bg-ink-50/60">
                     <tr>
@@ -112,6 +113,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
 
         {{-- Menu Items (read-only preview) --}}
@@ -120,6 +122,7 @@
                 <h3 class="font-medium text-ink-900">Menu Items</h3>
                 <a href="{{ route('admin.branches.menu-items.index', [$restaurant, $branch]) }}" class="text-sm font-medium text-brand-600 hover:underline">Manage Menu Items &rarr;</a>
             </div>
+            <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead class="text-left text-ink-500 border-b bg-ink-50/60">
                     <tr>
@@ -151,6 +154,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
 
         {{-- Orders (read-only preview) --}}
@@ -159,6 +163,7 @@
                 <h3 class="font-medium text-ink-900">Recent Orders</h3>
                 <a href="{{ route('admin.branches.orders.index', [$restaurant, $branch]) }}" class="text-sm font-medium text-brand-600 hover:underline">View All Orders &rarr;</a>
             </div>
+            <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead class="text-left text-ink-500 border-b bg-ink-50/60">
                     <tr>
@@ -188,6 +193,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
 
         {{-- Staff (read-only preview) --}}
@@ -196,6 +202,7 @@
                 <h3 class="font-medium text-ink-900">Staff</h3>
                 <a href="{{ route('admin.branches.staff.index', [$restaurant, $branch]) }}" class="text-sm font-medium text-brand-600 hover:underline">Manage Staff &rarr;</a>
             </div>
+            <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead class="text-left text-ink-500 border-b bg-ink-50/60">
                     <tr>
@@ -227,6 +234,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 @endsection

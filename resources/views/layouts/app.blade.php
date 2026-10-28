@@ -10,17 +10,28 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-brand-50/40 text-ink-900 antialiased">
-    <div class="min-h-screen flex">
+    <div x-data="{ sidebarOpen: false }" class="h-screen flex overflow-hidden">
+        {{-- Mobile sidebar backdrop --}}
+        <div x-show="sidebarOpen" x-cloak @click="sidebarOpen = false"
+             class="fixed inset-0 z-30 bg-ink-900/50 lg:hidden"></div>
+
         {{-- Sidebar --}}
-        <aside class="relative w-64 shrink-0 overflow-hidden bg-brand-50 border-r border-ink-100 flex flex-col">
+        <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+               class="fixed inset-y-0 left-0 z-40 w-64 shrink-0 overflow-hidden bg-brand-50 border-r border-ink-100 flex flex-col transform transition-transform duration-200 ease-in-out lg:static lg:translate-x-0">
             <div class="flex items-center gap-3 px-6 py-5">
                 <span class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
                     <img src="{{ asset('images/logo_jagdai.jpeg') }}" alt="Jagdai Cloud Kitchen" class="h-12 w-12 object-contain">
                 </span>
-                <div class="leading-tight">
+                <div class="leading-tight flex-1 min-w-0">
                     <div class="text-base font-bold tracking-tight text-ink-900">Jagdai Cloud</div>
                     <div class="-mt-0.5 text-base font-bold tracking-tight text-brand-500">Kitchen</div>
                 </div>
+                <button type="button" @click="sidebarOpen = false" class="shrink-0 rounded-lg p-1.5 text-ink-400 hover:bg-ink-100 hover:text-ink-700 lg:hidden">
+                    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
             </div>
 
             <nav class="relative flex-1 overflow-y-auto px-4 py-2 space-y-1 text-sm">
@@ -320,11 +331,20 @@
             </div>
         </aside>
 
-        <div class="flex-1 flex flex-col min-w-0">
+        <div class="flex-1 flex flex-col min-w-0 min-h-0">
             {{-- Topbar --}}
-            <header class="bg-white border-b border-ink-100 px-8 py-4">
-                <div class="flex items-center justify-between gap-6">
-                    <h1 class="text-xl font-semibold text-ink-900">@yield('header', 'Jagdai Cloud Kitchen')</h1>
+            <header class="bg-white border-b border-ink-100 px-4 py-4 lg:px-8">
+                <div class="flex items-center justify-between gap-4 lg:gap-6">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <button type="button" @click="sidebarOpen = true" class="shrink-0 rounded-lg p-2 text-ink-500 hover:bg-brand-50 hover:text-brand-600 lg:hidden">
+                            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <line x1="3" y1="12" x2="21" y2="12"/>
+                                <line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </button>
+                        <h1 class="text-xl font-semibold text-ink-900 truncate">@yield('header', 'Jagdai Cloud Kitchen')</h1>
+                    </div>
 
                     <div class="flex items-center gap-4">
                         <div class="relative hidden md:block">
@@ -354,7 +374,7 @@
                 </div>
             </header>
 
-            <main class="flex-1 p-8">
+            <main class="flex-1 overflow-y-auto p-4 lg:p-8">
                 @if (session('status'))
                     <div class="mb-5 flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
                         <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -55,7 +55,7 @@
         {{-- Add Menu Item modal --}}
         <div x-show="addOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4 overflow-y-auto">
             <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden my-8" @click.outside="addOpen = false">
-                <div class="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+                <div class="flex items-center justify-between px-4 py-4 border-b border-ink-100 sm:px-6">
                     <h3 class="text-lg font-bold text-ink-900">Add Menu Item</h3>
                     <button type="button" @click="addOpen = false" class="text-ink-400 hover:text-ink-700">
                         <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -70,9 +70,9 @@
                         Add an <a href="{{ route('admin.branches.categories.index', [$restaurant, $branch]) }}" class="text-brand-600 hover:underline">item category</a> first before adding menu items.
                     </p>
                 @else
-                    <form method="POST" action="{{ route('admin.branches.menu-items.store', [$restaurant, $branch]) }}" enctype="multipart/form-data" class="p-6 space-y-4">
+                    <form method="POST" action="{{ route('admin.branches.menu-items.store', [$restaurant, $branch]) }}" enctype="multipart/form-data" class="p-4 space-y-4 sm:p-6">
                         @csrf
-                        <div class="grid grid-cols-4 gap-3 items-end">
+                        <div class="grid grid-cols-1 gap-3 items-end sm:grid-cols-2 lg:grid-cols-4">
                             <div>
                                 <label class="block text-xs font-medium text-ink-500 mb-1">Category</label>
                                 <x-searchable-select name="category_id" placeholder="Select a category"
@@ -104,7 +104,7 @@
 
                         <div>
                             <label class="block text-xs font-medium text-ink-500 mb-2">Food Type</label>
-                            <div class="flex gap-3">
+                            <div class="flex flex-wrap gap-3">
                                 @foreach (\App\Enums\FoodType::cases() as $foodType)
                                     <label class="flex items-center gap-2 rounded-lg border border-ink-200 px-3 py-2 text-sm cursor-pointer has-[:checked]:border-brand-400 has-[:checked]:bg-brand-50">
                                         <input type="radio" name="food_type" value="{{ $foodType->value }}" {{ $loop->first ? 'checked' : '' }} class="text-brand-600">
@@ -256,7 +256,7 @@
         @foreach ($menuItems as $item)
             <div x-show="openViewFor === {{ $item->id }}" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4">
                 <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden" @click.outside="openViewFor = null">
-                    <div class="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+                    <div class="flex items-center justify-between px-4 py-4 border-b border-ink-100 sm:px-6">
                         <h3 class="text-lg font-bold text-ink-900">Menu Item Details</h3>
                         <button type="button" @click="openViewFor = null" class="text-ink-400 hover:text-ink-700">
                             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -265,7 +265,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="p-6 space-y-4">
+                    <div class="p-4 space-y-4 sm:p-6">
                         <div class="flex items-center gap-4">
                             @if ($item->image_path)
                                 <img src="{{ asset('storage/' . $item->image_path) }}" class="h-16 w-16 shrink-0 rounded-xl object-cover">
@@ -291,7 +291,7 @@
                             <p class="text-sm text-ink-600">{{ $item->description }}</p>
                         @endif
 
-                        <dl class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                        <dl class="grid grid-cols-1 gap-x-4 gap-y-3 text-sm sm:grid-cols-2">
                             <div>
                                 <dt class="text-xs text-ink-400">Category</dt>
                                 <dd class="font-medium text-ink-900">{{ $item->category->name }}</dd>
@@ -328,7 +328,7 @@
         @foreach ($menuItems as $item)
             <div x-show="openEditFor === {{ $item->id }}" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4 overflow-y-auto">
                 <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden my-8" @click.outside="openEditFor = null">
-                    <div class="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+                    <div class="flex items-center justify-between px-4 py-4 border-b border-ink-100 sm:px-6">
                         <h3 class="text-lg font-bold text-ink-900">Edit Menu Item</h3>
                         <button type="button" @click="openEditFor = null" class="text-ink-400 hover:text-ink-700">
                             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -337,10 +337,10 @@
                             </svg>
                         </button>
                     </div>
-                    <form method="POST" action="{{ route('admin.branches.menu-items.update', [$restaurant, $branch, $item]) }}" enctype="multipart/form-data" class="p-6 space-y-4">
+                    <form method="POST" action="{{ route('admin.branches.menu-items.update', [$restaurant, $branch, $item]) }}" enctype="multipart/form-data" class="p-4 space-y-4 sm:p-6">
                         @csrf
                         @method('PUT')
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
                                 <label class="block text-xs font-medium text-ink-500 mb-1">Category</label>
                                 <x-searchable-select name="category_id" placeholder="Select a category"
@@ -353,7 +353,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
                                 <label class="block text-xs font-medium text-ink-500 mb-1">Price</label>
                                 <input type="number" step="0.01" name="price" value="{{ $item->price }}" required class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
@@ -382,7 +382,7 @@
 
                         <div>
                             <label class="block text-xs font-medium text-ink-500 mb-2">Food Type</label>
-                            <div class="flex gap-3">
+                            <div class="flex flex-wrap gap-3">
                                 @foreach (\App\Enums\FoodType::cases() as $foodType)
                                     <label class="flex items-center gap-2 rounded-lg border border-ink-200 px-3 py-2 text-sm cursor-pointer has-[:checked]:border-brand-400 has-[:checked]:bg-brand-50">
                                         <input type="radio" name="food_type" value="{{ $foodType->value }}" {{ $item->food_type === $foodType ? 'checked' : '' }} class="text-brand-600">
@@ -419,7 +419,7 @@
         @foreach ($menuItems as $item)
             <div x-show="openVariationsFor === {{ $item->id }}" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4">
                 <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden" @click.outside="openVariationsFor = null">
-                    <div class="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+                    <div class="flex items-center justify-between px-4 py-4 border-b border-ink-100 sm:px-6">
                         <div>
                             <h3 class="text-lg font-bold text-ink-900">Variations</h3>
                             <p class="text-xs text-ink-400">{{ $item->name }} — e.g. Half / Full, Small / Medium / Large</p>
@@ -432,7 +432,7 @@
                         </button>
                     </div>
 
-                    <div class="p-6">
+                    <div class="p-4 sm:p-6">
                         <div class="flex justify-end mb-3">
                             <button type="button" @click="addVariationOpen = !addVariationOpen" class="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700">
                                 + Add Variation
@@ -440,11 +440,11 @@
                         </div>
 
                         <div x-show="addVariationOpen" x-cloak class="mb-4 rounded-lg border border-ink-100 bg-ink-50/40 p-3">
-                            <form method="POST" action="{{ route('admin.branches.menu-items.variations.store', [$restaurant, $branch, $item]) }}" class="flex gap-2">
+                            <form method="POST" action="{{ route('admin.branches.menu-items.variations.store', [$restaurant, $branch, $item]) }}" class="flex flex-col gap-2 sm:flex-row">
                                 @csrf
                                 <input type="text" name="name" required placeholder="e.g. Half" class="flex-1 rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
-                                <input type="number" step="0.01" name="price" required placeholder="Price" class="w-28 rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm">
-                                <button type="submit" class="rounded-lg bg-brand-600 px-3 py-2 text-white text-xs font-medium hover:bg-brand-700">Add</button>
+                                <input type="number" step="0.01" name="price" required placeholder="Price" class="w-full rounded-lg border-ink-200 px-3 py-2 shadow-sm text-sm sm:w-28">
+                                <button type="submit" class="w-full rounded-lg bg-brand-600 px-3 py-2 text-white text-xs font-medium hover:bg-brand-700 sm:w-auto">Add</button>
                             </form>
                         </div>
 
