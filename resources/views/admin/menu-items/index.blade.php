@@ -115,7 +115,7 @@
     </div>
 
     {{-- Add Menu Item modal --}}
-    <div x-show="addOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4 overflow-y-auto">
+    <div x-show="addOpen" x-cloak class="fixed inset-0 z-50 flex items-start justify-center bg-ink-900/50 p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden my-8" @click.outside="addOpen = false">
             <div class="flex items-center justify-between px-4 py-4 border-b border-ink-100 sm:px-6">
                 <h3 class="text-lg font-bold text-ink-900">Add Menu Item</h3>
@@ -457,7 +457,7 @@
 
     {{-- Edit modals (one per item, kept outside the <table> so they're valid HTML) --}}
     @foreach ($menuItems as $item)
-        <div x-show="openEditFor === {{ $item->id }}" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4 overflow-y-auto">
+        <div x-show="openEditFor === {{ $item->id }}" x-cloak class="fixed inset-0 z-50 flex items-start justify-center bg-ink-900/50 p-4 overflow-y-auto">
             <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden my-8" @click.outside="openEditFor = null">
                 <div class="flex items-center justify-between px-4 py-4 border-b border-ink-100 sm:px-6">
                     <h3 class="text-lg font-bold text-ink-900">Edit Menu Item</h3>

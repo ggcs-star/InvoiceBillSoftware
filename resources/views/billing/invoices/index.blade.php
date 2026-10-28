@@ -4,8 +4,8 @@
 @section('header', 'Invoices')
 
 @section('content')
-    <div class="bg-white rounded-2xl border border-ink-100 shadow-card overflow-hidden">
-        <table class="w-full text-sm">
+    <div class="bg-white rounded-2xl border border-ink-100 shadow-card overflow-x-auto">
+        <table class="w-full text-sm whitespace-nowrap">
             <thead class="text-left text-ink-500 border-b">
                 <tr>
                     <th class="px-5 py-3">Invoice #</th>

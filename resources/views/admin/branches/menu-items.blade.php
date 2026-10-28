@@ -53,7 +53,7 @@
         </div>
 
         {{-- Add Menu Item modal --}}
-        <div x-show="addOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4 overflow-y-auto">
+        <div x-show="addOpen" x-cloak class="fixed inset-0 z-50 flex items-start justify-center bg-ink-900/50 p-4 overflow-y-auto">
             <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden my-8" @click.outside="addOpen = false">
                 <div class="flex items-center justify-between px-4 py-4 border-b border-ink-100 sm:px-6">
                     <h3 class="text-lg font-bold text-ink-900">Add Menu Item</h3>
@@ -72,7 +72,7 @@
                 @else
                     <form method="POST" action="{{ route('admin.branches.menu-items.store', [$restaurant, $branch]) }}" enctype="multipart/form-data" class="p-4 space-y-4 sm:p-6">
                         @csrf
-                        <div class="grid grid-cols-1 gap-3 items-end sm:grid-cols-2 lg:grid-cols-4">
+                        <div class="grid grid-cols-1 gap-3 items-end sm:grid-cols-2">
                             <div>
                                 <label class="block text-xs font-medium text-ink-500 mb-1">Category</label>
                                 <x-searchable-select name="category_id" placeholder="Select a category"
@@ -326,7 +326,7 @@
 
         {{-- Edit modals (one per item) --}}
         @foreach ($menuItems as $item)
-            <div x-show="openEditFor === {{ $item->id }}" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4 overflow-y-auto">
+            <div x-show="openEditFor === {{ $item->id }}" x-cloak class="fixed inset-0 z-50 flex items-start justify-center bg-ink-900/50 p-4 overflow-y-auto">
                 <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden my-8" @click.outside="openEditFor = null">
                     <div class="flex items-center justify-between px-4 py-4 border-b border-ink-100 sm:px-6">
                         <h3 class="text-lg font-bold text-ink-900">Edit Menu Item</h3>

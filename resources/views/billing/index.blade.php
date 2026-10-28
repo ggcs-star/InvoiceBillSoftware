@@ -47,9 +47,9 @@
 @endphp
 <div x-data="billingApp(@js(['activeOrder' => $activeOrder ?? null, 'items' => $itemsMeta]))" x-init="init()">
 
-    <div class="grid grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {{-- Menu --}}
-        <div class="col-span-2 space-y-4">
+        <div class="lg:col-span-2 space-y-4">
             <div class="flex flex-wrap items-center gap-3">
                 <div class="relative flex-1 min-w-[220px]">
                     <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -121,8 +121,8 @@
         </div>
 
         {{-- Cart --}}
-        <div class="col-span-1">
-            <div class="bg-white rounded-2xl border border-ink-100 shadow-card p-4 sticky top-6">
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl border border-ink-100 shadow-card p-4 lg:sticky lg:top-6">
                 <div class="space-y-3 mb-3 pb-3 border-b">
                     <div>
                         <label class="block text-xs font-medium text-ink-500 mb-1">Customer Name (optional)</label>
@@ -151,8 +151,8 @@
 
                         <div class="space-y-2 max-h-80 overflow-y-auto">
                             <template x-for="item in order.items" :key="item.id">
-                                <div class="flex items-center justify-between text-sm border-b pb-2">
-                                    <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="flex flex-wrap items-center gap-2 text-sm border-b pb-2">
+                                    <div class="flex items-center gap-2 flex-1 min-w-[140px]">
                                         <span class="shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-base overflow-hidden">
                                             <template x-if="itemsMeta[item.menu_item_id]?.image_url">
                                                 <img :src="itemsMeta[item.menu_item_id].image_url" class="h-full w-full object-cover">
@@ -166,18 +166,20 @@
                                             <div class="text-xs text-ink-400" x-text="'₹' + item.unit_price + ' each'"></div>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-1.5 shrink-0">
-                                        <button @click="updateQty(item, item.quantity - 1)" class="w-6 h-6 rounded border text-ink-500 hover:bg-ink-50">-</button>
-                                        <span class="w-4 text-center" x-text="item.quantity"></span>
-                                        <button @click="updateQty(item, item.quantity + 1)" class="w-6 h-6 rounded border text-ink-500 hover:bg-ink-50">+</button>
+                                    <div class="flex items-center gap-2 shrink-0 ml-auto">
+                                        <div class="flex items-center gap-1.5">
+                                            <button @click="updateQty(item, item.quantity - 1)" class="w-6 h-6 rounded border text-ink-500 hover:bg-ink-50">-</button>
+                                            <span class="w-4 text-center" x-text="item.quantity"></span>
+                                            <button @click="updateQty(item, item.quantity + 1)" class="w-6 h-6 rounded border text-ink-500 hover:bg-ink-50">+</button>
+                                        </div>
+                                        <div class="w-16 text-right" x-text="'₹' + item.line_total"></div>
+                                        <button @click="removeItem(item)" class="text-ink-300 hover:text-red-500" title="Remove">
+                                            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"/>
+                                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                            </svg>
+                                        </button>
                                     </div>
-                                    <div class="w-16 text-right shrink-0" x-text="'₹' + item.line_total"></div>
-                                    <button @click="removeItem(item)" class="shrink-0 text-ink-300 hover:text-red-500" title="Remove">
-                                        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"/>
-                                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                                        </svg>
-                                    </button>
                                 </div>
                             </template>
 
@@ -232,7 +234,7 @@
     {{-- Item Variations --}}
     <div x-show="variationItem" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden" @click.outside="variationItem = null">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-ink-100">
+            <div class="flex items-center justify-between px-4 py-4 border-b border-ink-100 sm:px-6">
                 <h3 class="text-lg font-bold text-ink-900">Item Variations</h3>
                 <button @click="variationItem = null" class="text-ink-400 hover:text-ink-700">
                     <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -242,25 +244,25 @@
                 </button>
             </div>
 
-            <div class="px-6 pt-4">
+            <div class="px-4 pt-4 sm:px-6">
                 <div class="font-semibold text-ink-900" x-text="variationItem?.display_name"></div>
                 <div class="text-sm text-ink-500" x-show="variationItem?.description" x-text="variationItem?.description"></div>
             </div>
 
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 <div class="rounded-xl border border-ink-100 overflow-hidden">
-                    <div class="grid grid-cols-3 bg-ink-50/60 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-ink-500">
+                    <div class="grid grid-cols-3 bg-ink-50/60 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-ink-500 sm:px-4">
                         <span>Item Name</span>
                         <span>Price</span>
                         <span class="text-right">Action</span>
                     </div>
                     <template x-for="variation in variationItem?.variations ?? []" :key="variation.id">
-                        <div class="grid grid-cols-3 items-center px-4 py-3 border-t border-ink-100">
-                            <span class="font-medium text-ink-900" x-text="variation.name"></span>
-                            <span class="text-ink-600" x-text="'₹' + variation.price.toFixed(2)"></span>
+                        <div class="grid grid-cols-3 items-center gap-2 px-3 py-3 border-t border-ink-100 sm:px-4">
+                            <span class="font-medium text-ink-900 truncate" x-text="variation.name"></span>
+                            <span class="text-ink-600 text-sm" x-text="'₹' + variation.price.toFixed(2)"></span>
                             <span class="text-right">
                                 <button @click="addItem(variationItem.id, variation.id); variationItem = null"
-                                        class="rounded-lg bg-brand-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-700">
+                                        class="rounded-lg bg-brand-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-brand-700 sm:px-4 sm:text-sm">
                                     Select
                                 </button>
                             </span>
@@ -274,14 +276,14 @@
     {{-- Receipt --}}
     <div x-show="receipt" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/50 p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden" @click.outside="receipt = null">
-            <div class="p-6 text-center border-b border-dashed border-ink-200">
+            <div class="p-4 text-center border-b border-dashed border-ink-200 sm:p-6">
                 <div class="font-bold text-lg text-ink-900">{{ $branch->restaurant->name }}</div>
                 <div class="text-xs text-ink-500">{{ $branch->name }}@if($branch->address) — {{ $branch->address }}@endif</div>
                 @if ($branch->gstin)
                     <div class="text-xs text-ink-400">GSTIN: {{ $branch->gstin }}</div>
                 @endif
             </div>
-            <div class="p-6 space-y-3 text-sm">
+            <div class="p-4 space-y-3 text-sm sm:p-6">
                 <div class="flex justify-between text-ink-500">
                     <span>Invoice No.</span>
                     <span class="font-medium text-ink-900" x-text="receipt?.invoice_number"></span>

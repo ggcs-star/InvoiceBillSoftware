@@ -199,7 +199,7 @@
     </div>
 
     <div class="bg-white rounded-2xl border border-ink-100 shadow-card overflow-x-auto">
-        <table class="w-full text-sm">
+        <table class="w-full text-sm whitespace-nowrap">
             <thead class="text-left text-ink-500 border-b bg-ink-50/60">
                 <tr>
                     <th class="px-5 py-3">Name</th>
